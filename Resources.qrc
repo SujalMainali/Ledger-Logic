@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/NavbarLogo.png</file>
+        <file>images/NavbarLogo1.png</file>
+        <file>images/AppLogo.png</file>
+        <file>images/EnterDetailImage.jpg</file>
+    </qresource>
+</RCC>

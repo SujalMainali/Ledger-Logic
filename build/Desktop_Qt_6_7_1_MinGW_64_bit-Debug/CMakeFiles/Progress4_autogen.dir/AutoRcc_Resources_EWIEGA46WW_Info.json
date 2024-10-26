@@ -1,0 +1,25 @@
+{
+	"BUILD_DIR" : "C:/Users/ACER/OneDrive/Desktop/windows_project/main/Progress4/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/Progress4_autogen",
+	"CMAKE_BINARY_DIR" : "C:/Users/ACER/OneDrive/Desktop/windows_project/main/Progress4/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug",
+	"CMAKE_CURRENT_BINARY_DIR" : "C:/Users/ACER/OneDrive/Desktop/windows_project/main/Progress4/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug",
+	"CMAKE_CURRENT_SOURCE_DIR" : "C:/Users/ACER/OneDrive/Desktop/windows_project/main/Progress4",
+	"CMAKE_SOURCE_DIR" : "C:/Users/ACER/OneDrive/Desktop/windows_project/main/Progress4",
+	"INCLUDE_DIR" : "C:/Users/ACER/OneDrive/Desktop/windows_project/main/Progress4/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/Progress4_autogen/include",
+	"INPUTS" : 
+	[
+		"C:/Users/ACER/OneDrive/Desktop/windows_project/main/Progress4/images/AppLogo.png",
+		"C:/Users/ACER/OneDrive/Desktop/windows_project/main/Progress4/images/EnterDetailImage.jpg",
+		"C:/Users/ACER/OneDrive/Desktop/windows_project/main/Progress4/images/NavbarLogo.png",
+		"C:/Users/ACER/OneDrive/Desktop/windows_project/main/Progress4/images/NavbarLogo1.png"
+	],
+	"LOCK_FILE" : "C:/Users/ACER/OneDrive/Desktop/windows_project/main/Progress4/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/CMakeFiles/Progress4_autogen.dir/AutoRcc_Resources_EWIEGA46WW_Lock.lock",
+	"MULTI_CONFIG" : false,
+	"OPTIONS" : [ "--no-zstd", "-name", "Resources" ],
+	"OUTPUT_CHECKSUM" : "EWIEGA46WW",
+	"OUTPUT_NAME" : "qrc_Resources.cpp",
+	"RCC_EXECUTABLE" : "C:/Qt/6.7.1/mingw_64/./bin/rcc.exe",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "C:/Users/ACER/OneDrive/Desktop/windows_project/main/Progress4/build/Desktop_Qt_6_7_1_MinGW_64_bit-Debug/CMakeFiles/Progress4_autogen.dir/AutoRcc_Resources_EWIEGA46WW_Used.txt",
+	"SOURCE" : "C:/Users/ACER/OneDrive/Desktop/windows_project/main/Progress4/Resources.qrc",
+	"VERBOSITY" : 0
+}

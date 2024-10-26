@@ -1,0 +1,8 @@
+/home/home/ProjectWindows/GUI/build/CMakeFiles/GUI.dir
+/home/home/ProjectWindows/GUI/build/CMakeFiles/edit_cache.dir
+/home/home/ProjectWindows/GUI/build/CMakeFiles/rebuild_cache.dir
+/home/home/ProjectWindows/GUI/build/CMakeFiles/list_install_components.dir
+/home/home/ProjectWindows/GUI/build/CMakeFiles/install.dir
+/home/home/ProjectWindows/GUI/build/CMakeFiles/install/local.dir
+/home/home/ProjectWindows/GUI/build/CMakeFiles/install/strip.dir
+/home/home/ProjectWindows/GUI/build/CMakeFiles/GUI_autogen.dir
