@@ -32,13 +32,20 @@ public:
 private slots:
     void on_Accounting_clicked();
 
-    void on_pushButton_clicked();
 
     void on_Sales_clicked();
 
     void on_CreateInvoice_clicked();
 
     void on_RecordPayment_clicked();
+
+    void on_Purchase_clicked();
+
+    void on_CreateBill_clicked();
+
+    void on_RecordBillPayment_clicked();
+
+    void on_NavButton_clicked();
 
 private:
     Ui::MainWindow *ui;

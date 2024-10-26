@@ -105,6 +105,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->Border->setVisible(false);
     ui->SalesOptions->setVisible(false);
+    ui->BillOptions->setVisible(false);
 
 
 
@@ -125,6 +126,12 @@ MainWindow::~MainWindow()
     delete ui;
 
 }
+
+
+
+
+
+
 
 
 

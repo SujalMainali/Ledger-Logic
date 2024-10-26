@@ -8,6 +8,8 @@
 #include<QDebug>
 #include "readpayment.h"
 #include "create1.h"
+#include "CreateBill.h"
+#include "ReadSupplierPayment.h"
 
 
 
@@ -108,12 +110,12 @@ void MainWindow::on_Accounting_clicked()
 }
 
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_NavButton_clicked()
 {
     ui->Navbar->setVisible(!ui->Navbar->isVisible());
-    ui->SalesOptions->setVisible(false);
+        ui->SalesOptions->setVisible(false);
+        ui->BillOptions->setVisible(false);
 }
-
 
 
 
@@ -147,6 +149,35 @@ void MainWindow::on_RecordPayment_clicked()
     this->close();
     delete this;
 }
+void MainWindow::on_Purchase_clicked()
+{
+    ui->BillOptions->setVisible(true);
+}
 
+
+void MainWindow::on_CreateBill_clicked()
+{
+    CreateBill* CreateBillWin= new CreateBill();
+    QSize currentSize = this->size();
+    QPoint currentPosition = this->pos();
+    CreateBillWin->resize(currentSize);
+    CreateBillWin->move(currentPosition);
+    CreateBillWin->show();
+    this->close();
+    delete this;
+}
+
+
+void MainWindow::on_RecordBillPayment_clicked()
+{
+    ReadSupplierPayment* ReadSupplierWin= new ReadSupplierPayment();
+    QSize currentSize = this->size();
+    QPoint currentPosition = this->pos();
+    ReadSupplierWin->resize(currentSize);
+    ReadSupplierWin->move(currentPosition);
+    ReadSupplierWin->show();
+    this->close();
+    delete this;
+}
 
 #endif // FUNCTIONSDEFINITION_H

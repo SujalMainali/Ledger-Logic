@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(MainMenu VERSION 0.1 LANGUAGES CXX)
+project(LedgerLogic VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -30,6 +30,7 @@ set(PROJECT_SOURCES
     #Including image
     Resources.qrc
 
+
     #Including Add Account Window
     AddWindow.cpp
     AddWindow.h
@@ -49,6 +50,16 @@ set(PROJECT_SOURCES
     readpayment.cpp
     readpayment.h
     readpayment.ui
+
+    #Including RecordSupplier Payment
+    ReadSupplierPayment.h
+    ReadSupplierPayment.cpp
+    ReadSupplierPayment.ui
+
+    #Including Create Bill Window
+    CreateBill.h
+    CreateBill.ui
+    CreateBill.cpp
 )
 
 # Specify the path to your database file
@@ -66,32 +77,32 @@ endif()
 
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(Progress4_received
+    qt_add_executable(LedgerLogic
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
     )
 else()
     if(ANDROID)
-        add_library(Progress4_received SHARED
+        add_library(LedgerLogic SHARED
             ${PROJECT_SOURCES}
         )
     else()
-        add_executable(Progress4_received
+        add_executable(LedgerLogic
             ${PROJECT_SOURCES}
         )
     endif()
 endif()
 
 # Link necessary libraries (Qt Widgets, Charts, and SQL)
-target_link_libraries(Progress4_received PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
-target_link_libraries(Progress4_received PRIVATE Qt6::Charts)
-target_link_libraries(Progress4_received PRIVATE Qt6::Sql)
+target_link_libraries(LedgerLogic PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(LedgerLogic PRIVATE Qt6::Charts)
+target_link_libraries(LedgerLogic PRIVATE Qt6::Sql)
 
 if(${QT_VERSION} VERSION_LESS 6.1.0)
     set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.GUI)
 endif()
 
-set_target_properties(Progress4_received PROPERTIES
+set_target_properties(LedgerLogic PROPERTIES
     ${BUNDLE_ID_OPTION}
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
@@ -100,12 +111,12 @@ set_target_properties(Progress4_received PROPERTIES
 )
 
 include(GNUInstallDirs)
-install(TARGETS Progress4_received
+install(TARGETS LedgerLogic
     BUNDLE DESTINATION .
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
 if(QT_VERSION_MAJOR EQUAL 6)
-    qt_finalize_executable(Progress4_received)
+    qt_finalize_executable(LedgerLogic)
 endif()
