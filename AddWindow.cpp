@@ -152,7 +152,14 @@ void AddWindow::on_Save_clicked()
     else if(ui->ParentCheckbox->isChecked()){
         AddParentToDatabase();
     }
-
+    ChartOfAccountWindow * ChartOfAccountWin= new ChartOfAccountWindow();
+    QSize currentSize = this->size();
+    QPoint currentPosition = this->pos();
+    ChartOfAccountWin->resize(currentSize);
+    ChartOfAccountWin->move(currentPosition);
+    ChartOfAccountWin->show();
+    this->close();
+    delete this;
 }
 
 

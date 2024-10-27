@@ -226,3 +226,25 @@ void ChartOfAccountWindow::on_EditAccount_clicked()
 
 }
 
+int ChartOfAccountWindow::getAccountIdFromAccountName(const QString &accountName) {
+    int accountId = -1; // Default to -1 if not found
+    QSqlDatabase db = MainWindow::ConnectDatabase();
+    if (!db.isOpen()) {
+        qDebug() << "Failed to open the database for account retrieval!";
+        return accountId;
+    }
+
+    QSqlQuery query(db);
+    query.prepare("SELECT account_id FROM ChartOfAccounts WHERE account_name = :account_name");
+    query.bindValue(":account_name", accountName);
+
+    if (query.exec() && query.next()) {
+        accountId = query.value(0).toInt(); // Retrieve the account ID
+    } else {
+        qDebug() << "Failed to retrieve account ID:" << query.lastError().text();
+    }
+
+    db.close();
+    return accountId;
+}
+

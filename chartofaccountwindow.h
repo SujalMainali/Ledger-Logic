@@ -27,6 +27,7 @@ public:
     QSqlDatabase db;
     static int16_t selectedAccountId;
     bool isParentAccount;
+    static int getAccountIdFromAccountName(const QString &accountName);
 
 private slots:
     void on_pushButton_clicked();

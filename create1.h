@@ -20,16 +20,18 @@ public:
 
 private slots:
     void on_ItemsTable_cellChanged(int row, int column);
-
-    void on_pushButton_clicked();
     void populateComboBoxWithAccounts(QComboBox *comboBox);
     void saveTransactionItems();
     void saveSalesTransaction();
-    int getAccountIdFromAccountName(const QString &accountName);
     void setComboBoxInCell(int row, int column);
     void updateAmountInTable(int row);
     void showTotalAmount();
 //    static bool reload;
+
+
+    void on_CancelButton_clicked();
+
+    void on_SaveButton_clicked();
 
 private:
     Ui::CreateInvoice *ui;

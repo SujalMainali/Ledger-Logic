@@ -67,6 +67,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Rockwell Extra Bold'; font-size:11pt; font-weight:800; font-style:normal;&quot;&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Segoe UI'; font-weight:700;&quot;&gt;Create bill&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
+      <property name="tabStopDistance">
+       <double>0.000000000000000</double>
+      </property>
      </widget>
     </item>
     <item>
@@ -149,17 +152,14 @@ li.checked::marker { content: &quot;\2612&quot;; }
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QTextEdit" name="textEdit_3">
-            <property name="minimumSize">
-             <size>
-              <width>200</width>
-              <height>35</height>
-             </size>
-            </property>
+           <widget class="QLineEdit" name="ReadSupplierName">
             <property name="styleSheet">
              <string notr="true">background-color:grey;
 color:white;
-font: 900 9pt &quot;Segoe UI Black&quot;;</string>
+font: 10pt &quot;Segoe UI&quot;;</string>
+            </property>
+            <property name="cursorMoveStyle">
+             <enum>Qt::VisualMoveStyle</enum>
             </property>
            </widget>
           </item>
@@ -195,7 +195,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QTextEdit" name="textEdit_5">
+           <widget class="QComboBox" name="ShowAccounts">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -217,7 +217,7 @@ font: 900 9pt &quot;Segoe UI Black&quot;;</string>
          <property name="minimumSize">
           <size>
            <width>300</width>
-           <height>120</height>
+           <height>130</height>
           </size>
          </property>
          <property name="maximumSize">
@@ -242,7 +242,7 @@ font: 900 9pt &quot;Segoe UI Black&quot;;</string>
             <property name="minimumSize">
              <size>
               <width>120</width>
-              <height>0</height>
+              <height>35</height>
              </size>
             </property>
             <property name="maximumSize">
@@ -264,23 +264,18 @@ hr { height: 1px; border-width: 0; }
 li.unchecked::marker { content: &quot;\2610&quot;; }
 li.checked::marker { content: &quot;\2612&quot;; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Segoe UI Black'; font-size:9pt; font-weight:900; font-style:normal;&quot;&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Segoe UI'; font-weight:700;&quot;&gt;Bill Number&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Segoe UI'; font-weight:700;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Segoe UI'; font-weight:700;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QTextEdit" name="BillSpace">
-            <property name="styleSheet">
-             <string notr="true">background-color:grey;
-color:white;
-font: 900 9pt &quot;Segoe UI Black&quot;;</string>
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Segoe UI'; font-weight:700;&quot;&gt;Bill Number&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
            </widget>
           </item>
           <item row="1" column="0">
            <widget class="QTextEdit" name="IssueDateButton">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>35</height>
+             </size>
+            </property>
             <property name="maximumSize">
              <size>
               <width>150</width>
@@ -305,16 +300,44 @@ li.checked::marker { content: &quot;\2612&quot;; }
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QTextEdit" name="IssueDate">
+           <widget class="QDateEdit" name="ReadIssueDate">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>35</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>35</height>
+             </size>
+            </property>
             <property name="styleSheet">
              <string notr="true">background-color:grey;
 color:white;
 font: 900 9pt &quot;Segoe UI Black&quot;;</string>
             </property>
+            <property name="dateTime">
+             <datetime>
+              <hour>6</hour>
+              <minute>45</minute>
+              <second>0</second>
+              <year>2023</year>
+              <month>12</month>
+              <day>31</day>
+             </datetime>
+            </property>
            </widget>
           </item>
           <item row="2" column="0">
            <widget class="QTextEdit" name="DueDateButton">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>35</height>
+             </size>
+            </property>
             <property name="maximumSize">
              <size>
               <width>150</width>
@@ -334,13 +357,49 @@ hr { height: 1px; border-width: 0; }
 li.unchecked::marker { content: &quot;\2610&quot;; }
 li.checked::marker { content: &quot;\2612&quot;; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Segoe UI Black'; font-size:9pt; font-weight:900; font-style:normal;&quot;&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Segoe UI'; font-weight:400;&quot;&gt;Due Date&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Segoe UI'; font-weight:400;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Segoe UI'; font-weight:400;&quot;&gt;Due Date&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QTextEdit" name="DueDate">
+           <widget class="QDateEdit" name="ReadDueDate">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>35</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>35</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color:grey;
+color:white;
+font: 900 9pt &quot;Segoe UI Black&quot;;</string>
+            </property>
+            <property name="dateTime">
+             <datetime>
+              <hour>6</hour>
+              <minute>45</minute>
+              <second>0</second>
+              <year>2023</year>
+              <month>12</month>
+              <day>31</day>
+             </datetime>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="ReadBillNumber">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>35</height>
+             </size>
+            </property>
             <property name="styleSheet">
              <string notr="true">background-color:grey;
 color:white;
@@ -368,17 +427,17 @@ font: 900 9pt &quot;Segoe UI Black&quot;;</string>
      </widget>
     </item>
     <item>
-     <widget class="QTableWidget" name="tableWidget">
+     <widget class="QTableWidget" name="ItemsTable">
       <property name="minimumSize">
        <size>
         <width>600</width>
-        <height>100</height>
+        <height>70</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
         <width>16777215</width>
-        <height>250</height>
+        <height>70</height>
        </size>
       </property>
       <property name="styleSheet">
@@ -425,7 +484,7 @@ QTableWidget QScrollBar::handle:vertical {
        <enum>Qt::ElideMiddle</enum>
       </property>
       <property name="rowCount">
-       <number>6</number>
+       <number>1</number>
       </property>
       <property name="columnCount">
        <number>6</number>
@@ -436,11 +495,6 @@ QTableWidget QScrollBar::handle:vertical {
       <attribute name="horizontalHeaderStretchLastSection">
        <bool>true</bool>
       </attribute>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
-      <row/>
       <row/>
       <column>
        <property name="text">
@@ -621,10 +675,16 @@ li.checked::marker { content: &quot;\2612&quot;; }
            <property name="geometry">
             <rect>
              <x>20</x>
-             <y>20</y>
+             <y>10</y>
              <width>104</width>
-             <height>31</height>
+             <height>35</height>
             </rect>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>35</height>
+            </size>
            </property>
            <property name="styleSheet">
             <string notr="true">background-color:black;
@@ -642,17 +702,23 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Segoe UI'; font-weight:400;&quot;&gt;Total&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
           </widget>
-          <widget class="QTextEdit" name="Total">
+          <widget class="QLineEdit" name="Total">
            <property name="geometry">
             <rect>
-             <x>170</x>
-             <y>20</y>
-             <width>104</width>
-             <height>31</height>
+             <x>160</x>
+             <y>10</y>
+             <width>113</width>
+             <height>35</height>
             </rect>
            </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>35</height>
+            </size>
+           </property>
            <property name="styleSheet">
-            <string notr="true">background-color:grey;
+            <string notr="true">background-color:black;
 color:white;
 font: 900 9pt &quot;Segoe UI Black&quot;;</string>
            </property>
@@ -677,55 +743,52 @@ font: 900 9pt &quot;Segoe UI Black&quot;;</string>
           <property name="frameShadow">
            <enum>QFrame::Raised</enum>
           </property>
-          <widget class="QTextEdit" name="Save">
-           <property name="geometry">
-            <rect>
-             <x>150</x>
-             <y>30</y>
-             <width>104</width>
-             <height>31</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background-color:black
-;
-color:white;
-font: 900 9pt &quot;Segoe UI Black&quot;;</string>
-           </property>
-           <property name="html">
-            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-hr { height: 1px; border-width: 0; }
-li.unchecked::marker { content: &quot;\2610&quot;; }
-li.checked::marker { content: &quot;\2612&quot;; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Segoe UI Black'; font-size:9pt; font-weight:900; font-style:normal;&quot;&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Segoe UI'; font-weight:400;&quot;&gt;Save&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-          </widget>
-          <widget class="QTextEdit" name="textEdit">
+          <widget class="QPushButton" name="Cancel">
            <property name="geometry">
             <rect>
              <x>20</x>
              <y>30</y>
-             <width>91</width>
-             <height>31</height>
+             <width>100</width>
+             <height>35</height>
             </rect>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>100</width>
+             <height>35</height>
+            </size>
            </property>
            <property name="styleSheet">
             <string notr="true">background-color:black;
 color:white;
 font: 900 9pt &quot;Segoe UI Black&quot;;</string>
            </property>
-           <property name="html">
-            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-hr { height: 1px; border-width: 0; }
-li.unchecked::marker { content: &quot;\2610&quot;; }
-li.checked::marker { content: &quot;\2612&quot;; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Segoe UI Black'; font-size:9pt; font-weight:900; font-style:normal;&quot;&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Segoe UI'; font-weight:400;&quot;&gt;Cancel&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <property name="text">
+            <string>Cancel</string>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="Save">
+           <property name="geometry">
+            <rect>
+             <x>170</x>
+             <y>30</y>
+             <width>100</width>
+             <height>35</height>
+            </rect>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>100</width>
+             <height>35</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color:black;
+color:white;
+font: 900 9pt &quot;Segoe UI Black&quot;;</string>
+           </property>
+           <property name="text">
+            <string>Save</string>
            </property>
           </widget>
          </widget>
