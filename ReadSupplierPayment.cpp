@@ -22,12 +22,13 @@ ReadSupplierPayment::ReadSupplierPayment(QWidget *parent)
         Loadquery.prepare("SELECT bill_number, supplier_name, due_date, remaining_amount FROM BillTransactions WHERE remaining_amount > 0");
 
 
-        InvoiceBillFunctions::loadDueBills(ui->BillsTable, Loadquery);
+        InvoiceBillFunctions::loadDueBills(ui->BillsTable, Loadquery,db);
     } else {
         QMessageBox::critical(this, "Database Error", "Failed to open database connection.");
     }
 
     ui->ButtonsFrame->setVisible(false);
+    db.close();
 }
 
 ReadSupplierPayment::~ReadSupplierPayment()
@@ -72,7 +73,7 @@ void ReadSupplierPayment::on_Save_clicked()
     Loadquery.prepare("SELECT bill_number, supplier_name, due_date, remaining_amount FROM BillTransactions WHERE remaining_amount > 0");
 
     query.prepare("UPDATE BillTransactions SET paid_amount = paid_amount + :additionalPayment, remaining_amount = remaining_amount - :additionalPayment WHERE bill_number = :billNumber");
-    InvoiceBillFunctions::saveAdditionalPaymentsToDatabase(ui->BillsTable,query,Loadquery);
+    InvoiceBillFunctions::saveAdditionalPaymentsToDatabase(ui->BillsTable,query,Loadquery,db);
     db.close();
 }
 

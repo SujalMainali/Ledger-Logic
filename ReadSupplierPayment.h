@@ -17,7 +17,6 @@ class ReadSupplierPayment : public QMainWindow
 public:
     ReadSupplierPayment(QWidget *parent = nullptr);
     ~ReadSupplierPayment();
-    void loadDueBills();
 
 private slots:
     void on_BillsTable_cellDoubleClicked(int row, int column);

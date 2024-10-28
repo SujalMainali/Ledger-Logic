@@ -12,8 +12,9 @@ CreateBill::CreateBill(QWidget *parent)
     , ui(new Ui::CreateBill)
 {
     ui->setupUi(this);
-    InvoiceBillFunctions::setComboBoxInCell(ui->ItemsTable,0, 2);
-    InvoiceBillFunctions::populateComboBoxWithAccounts(ui->ShowAccounts);
+    QSqlDatabase db=MainWindow::ConnectDatabase();
+    InvoiceBillFunctions::setComboBoxInCell(ui->ItemsTable,0, 2,db);
+    InvoiceBillFunctions::populateComboBoxWithAccounts(ui->ShowAccounts,db);
 }
 
 CreateBill::~CreateBill()

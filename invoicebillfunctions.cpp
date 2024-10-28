@@ -13,7 +13,7 @@ InvoiceBillFunctions::InvoiceBillFunctions()
 
 
 // Static method to load due bills
-void InvoiceBillFunctions::loadDueBills(QTableWidget *Table, QSqlQuery &query)
+void InvoiceBillFunctions::loadDueBills(QTableWidget *Table, QSqlQuery &query, QSqlDatabase &db)
 {
     // Clear the existing rows in the table
     Table->setRowCount(0);
@@ -43,7 +43,7 @@ void InvoiceBillFunctions::loadDueBills(QTableWidget *Table, QSqlQuery &query)
             Table->setItem(row, 1, new QTableWidgetItem(supplierName));
             Table->setItem(row, 2, new QTableWidgetItem(dueDate));
             Table->setItem(row, 3, new QTableWidgetItem(remainingAmount));
-            InvoiceBillFunctions::setComboBoxInCell(Table, row, 4);
+            InvoiceBillFunctions::setComboBoxInCell(Table, row, 4,db);
 
             row++;
         }
@@ -66,10 +66,10 @@ void InvoiceBillFunctions::loadDueBills(QTableWidget *Table, QSqlQuery &query)
 
 
 // Static method to set a combo box in a table cell
-void InvoiceBillFunctions::setComboBoxInCell(QTableWidget *Table, int row, int column) {
+void InvoiceBillFunctions::setComboBoxInCell(QTableWidget *Table, int row, int column,QSqlDatabase &db) {
     // Create a new QComboBox
     QComboBox *comboBox = new QComboBox();
-    //InvoiceBillFunctions::populateComboBoxWithAccounts(comboBox);
+    InvoiceBillFunctions::populateComboBoxWithAccounts(comboBox,db);
 
     comboBox->setStyleSheet("background-color:rgb(209,212,203);");
     // Set the combo box as the cell widget
@@ -77,11 +77,10 @@ void InvoiceBillFunctions::setComboBoxInCell(QTableWidget *Table, int row, int c
 }
 
 // Static method to populate the combo box with account names
-void InvoiceBillFunctions::populateComboBoxWithAccounts(QComboBox *comboBox) {
+void InvoiceBillFunctions::populateComboBoxWithAccounts(QComboBox *comboBox,QSqlDatabase &db) {
     // Prepare and execute the query
-    QSqlDatabase db= MainWindow::ConnectDatabase();
 
-    QSqlQuery query;
+    QSqlQuery query(db);
     QString baseQuery = "SELECT account_name FROM ChartOfAccounts";
     query.prepare(baseQuery);
 
@@ -103,11 +102,10 @@ void InvoiceBillFunctions::populateComboBoxWithAccounts(QComboBox *comboBox) {
     if (comboBox->count() == 0) {
         qDebug() << "No accounts found in the database.";
     }
-    db.close();
 }
 
 // Static method to save additional payments to the database
-void InvoiceBillFunctions::saveAdditionalPaymentsToDatabase(QTableWidget *Table, QSqlQuery &query,QSqlQuery &LoadQuery)
+void InvoiceBillFunctions::saveAdditionalPaymentsToDatabase(QTableWidget *Table, QSqlQuery &query,QSqlQuery &LoadQuery,QSqlDatabase &db)
 {
     // Get the currently selected row
     int selectedRow = Table->currentRow();
@@ -141,7 +139,7 @@ void InvoiceBillFunctions::saveAdditionalPaymentsToDatabase(QTableWidget *Table,
             QMessageBox::information(nullptr, "Success", "Additional payment has been updated successfully.");
 
             // Refresh the table to reflect changes
-            loadDueBills(Table, LoadQuery);
+            loadDueBills(Table, LoadQuery,db);
         }
     }
 }
@@ -157,6 +155,7 @@ void InvoiceBillFunctions::saveAdditionalPaymentsToDatabase(QTableWidget *Table,
 
 
 void InvoiceBillFunctions::TableDataEntry(QTableWidget* Table,int row, int column, QLineEdit* Total){
+    QSqlDatabase db= MainWindow::ConnectDatabase();
     int totalColumns = Table->columnCount();
 
     // Check if the change is in the last row
@@ -184,7 +183,7 @@ void InvoiceBillFunctions::TableDataEntry(QTableWidget* Table,int row, int colum
             InvoiceBillFunctions::showTotalAmount(Table,Total);
             Table->blockSignals(false);
             Table->insertRow(row);
-            InvoiceBillFunctions::setComboBoxInCell(Table,row, 2);
+            InvoiceBillFunctions::setComboBoxInCell(Table,row, 2,db);
 
             int rowHeight = 35; // Set the height for each row
             int newHeight = (row+2) * rowHeight; // Calculate new height for the table
@@ -192,6 +191,7 @@ void InvoiceBillFunctions::TableDataEntry(QTableWidget* Table,int row, int colum
 
         }
     }
+    db.close();
 }
 void InvoiceBillFunctions::updateAmountInTable(QTableWidget *Table, int row){
     if (row < 0 || row >= Table->rowCount()) {

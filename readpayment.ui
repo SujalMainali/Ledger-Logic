@@ -590,6 +590,11 @@ QTableWidget QScrollBar::handle:vertical {
               <string>Due Amount</string>
              </property>
             </column>
+            <column>
+             <property name="text">
+              <string>BankAccount</string>
+             </property>
+            </column>
            </widget>
           </item>
          </layout>

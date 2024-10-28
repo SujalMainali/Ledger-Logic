@@ -20,12 +20,8 @@ public:
 
 private slots:
     void on_ItemsTable_cellChanged(int row, int column);
-    void populateComboBoxWithAccounts(QComboBox *comboBox);
     void saveTransactionItems();
     void saveSalesTransaction();
-    void setComboBoxInCell(int row, int column);
-    void updateAmountInTable(int row);
-    void showTotalAmount();
 //    static bool reload;
 
 

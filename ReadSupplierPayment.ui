@@ -455,7 +455,7 @@ QTableWidget QScrollBar::handle:vertical {
        <number>1</number>
       </property>
       <property name="columnCount">
-       <number>4</number>
+       <number>5</number>
       </property>
       <attribute name="horizontalHeaderDefaultSectionSize">
        <number>300</number>
@@ -482,6 +482,11 @@ QTableWidget QScrollBar::handle:vertical {
       <column>
        <property name="text">
         <string>Due Amount</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Bank Account</string>
        </property>
       </column>
      </widget>

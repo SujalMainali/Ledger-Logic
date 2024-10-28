@@ -16,10 +16,6 @@ class CreateBill : public QMainWindow
 
 public:
     CreateBill(QWidget *parent = nullptr);
-    void setComboBoxInCell(int row, int column);
-    void updateAmountInTable(int row);
-    void showTotalAmount();
-    void populateComboBoxWithAccounts(QComboBox *comboBox);
     void saveBillTransactionItems();
     void saveBillTransaction();
     ~CreateBill();

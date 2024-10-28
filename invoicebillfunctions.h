@@ -8,10 +8,10 @@ class InvoiceBillFunctions
 {
 public:
     InvoiceBillFunctions();
-    static void loadDueBills(QTableWidget *Table, QSqlQuery &query);
-    static void setComboBoxInCell(QTableWidget *Table, int row, int column);
-    static void populateComboBoxWithAccounts(QComboBox *comboBox);
-    static void saveAdditionalPaymentsToDatabase(QTableWidget *billsTable, QSqlQuery &query,QSqlQuery &LoadQuery);
+    static void loadDueBills(QTableWidget *Table, QSqlQuery &query, QSqlDatabase &db);
+    static void setComboBoxInCell(QTableWidget *Table, int row, int column, QSqlDatabase &db);
+    static void populateComboBoxWithAccounts(QComboBox *comboBox,QSqlDatabase &db);
+    static void saveAdditionalPaymentsToDatabase(QTableWidget *billsTable, QSqlQuery &query,QSqlQuery &LoadQuery,QSqlDatabase &db);
     static void TableDataEntry(QTableWidget* Table,int row, int column, QLineEdit* Total);
     static void updateAmountInTable(QTableWidget *Table, int row);
     static void showTotalAmount(QTableWidget *Table,QLineEdit *Total);
