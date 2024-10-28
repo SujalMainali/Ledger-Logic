@@ -60,6 +60,10 @@ set(PROJECT_SOURCES
     CreateBill.h
     CreateBill.ui
     CreateBill.cpp
+
+    #Including Function Files
+    invoicebillfunctions.cpp
+    invoicebillfunctions.h
 )
 
 # Specify the path to your database file

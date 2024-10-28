@@ -1,6 +1,7 @@
 #include "CreateBill.h"
 #include "mainwindow.h"
 #include "chartofaccountwindow.h"
+#include "invoicebillfunctions.h"
 #include "./ui_CreateBill.h"
 #include <QSql>
 #include <QSqlDatabase>
@@ -11,8 +12,8 @@ CreateBill::CreateBill(QWidget *parent)
     , ui(new Ui::CreateBill)
 {
     ui->setupUi(this);
-    setComboBoxInCell(0, 2);
-    populateComboBoxWithAccounts(ui->ShowAccounts);
+    InvoiceBillFunctions::setComboBoxInCell(ui->ItemsTable,0, 2);
+    InvoiceBillFunctions::populateComboBoxWithAccounts(ui->ShowAccounts);
 }
 
 CreateBill::~CreateBill()
@@ -22,113 +23,9 @@ CreateBill::~CreateBill()
 
 void CreateBill::on_ItemsTable_cellChanged(int row, int column)
 {
-    // Get the total number of columns in the table
-        int totalColumns = ui->ItemsTable->columnCount();
-
-        // Check if the change is in the last row
-        if (row == ui->ItemsTable->rowCount() - 1)
-        {
-            // Check if all the columns in the last row up to index 4 are filled, except for column 2
-            bool allFilled = true;
-            for (int col = 0; col < qMin(totalColumns, 5); ++col)  // Check only the first five columns
-            {
-                QTableWidgetItem *item = ui->ItemsTable->item(row, col);
-                // Skip column 2 check
-                if (col != 2 && (!item || item->text().trimmed().isEmpty()))
-                {
-                    allFilled = false;
-                    break;
-                }
-            }
-
-            // If all relevant cells in the last row are filled, add a new row
-            if (allFilled)
-            {
-                int row = ui->ItemsTable->rowCount();
-                ui->ItemsTable->blockSignals(true);
-                updateAmountInTable(row-1);
-                showTotalAmount();
-                ui->ItemsTable->blockSignals(false);
-                ui->ItemsTable->insertRow(row);
-                setComboBoxInCell(row, 2);
-                //ui->ItemsTable->resizeRowsToContents();
-
-                int rowHeight = 35; // Set the height for each row
-                int newHeight = (row+2) * rowHeight; // Calculate new height for the table
-                ui->ItemsTable->setFixedHeight(newHeight);
-
-            }
-        }
+    InvoiceBillFunctions::TableDataEntry(ui->ItemsTable,row,column,ui->Total);
 }
 
-void CreateBill::setComboBoxInCell(int row, int column) {
-    // Create a new QComboBox
-    QComboBox *comboBox = new QComboBox(this);
-    populateComboBoxWithAccounts(comboBox);
-
-    comboBox->setStyleSheet("background-color:rgb(209,212,203);");
-    // Set the combo box as the cell widget
-    ui->ItemsTable->setCellWidget(row, column, comboBox);
-}
-
-void CreateBill::updateAmountInTable(int row) {
-    if (row < 0 || row >= ui->ItemsTable->rowCount()) {
-        return; // Invalid row
-    }
-
-    // Get the rate and units to calculate the amount
-    double rate = ui->ItemsTable->item(row, 3)->text().toDouble();
-    int units = ui->ItemsTable->item(row, 4)->text().toInt();
-    double amount = rate * units;
-
-    // Set the amount in the corresponding cell
-    QTableWidgetItem *amountItem = new QTableWidgetItem(QString::number(amount, 'f', 2));
-    ui->ItemsTable->setItem(row, 5, amountItem); // Assuming amount is in column 5
-}
-
-void CreateBill::showTotalAmount() {
-    double totalAmount = 0.0;
-
-    // Calculate the total amount from the table
-    for (int row = 0; row < ui->ItemsTable->rowCount(); ++row) {
-        totalAmount += ui->ItemsTable->item(row, 5)->text().toDouble(); // Assuming amount is in column 5
-    }
-
-    ui->Total->setText(QString::number(totalAmount, 'f', 2)); // Assuming you have a QLabel or QLineEdit for total amount
-}
-
-void CreateBill::populateComboBoxWithAccounts(QComboBox *comboBox) {
-    QSqlDatabase db = MainWindow::ConnectDatabase();
-    if (!db.isOpen()) {
-        qDebug() << "Failed to open the database!";
-        return;
-    }
-
-    // Prepare and execute the query
-    QSqlQuery query;
-    query.prepare("SELECT account_name FROM ChartOfAccounts");
-
-    if (!query.exec()) {
-        qDebug() << "Failed to fetch account names:" << query.lastError().text();
-        return;
-    }
-
-    // Clear existing items in the combo box (if any)
-    comboBox->clear();
-
-    // Iterate through the query result and add account names to the combo box
-    while (query.next()) {
-        QString accountName = query.value(0).toString();
-        comboBox->addItem(accountName);
-    }
-
-    // Check if any items were added
-    if (comboBox->count() == 0) {
-        qDebug() << "No accounts found in the database.";
-    }
-
-    db.close();
-}
 
 void CreateBill::saveBillTransaction() {
     // Get the bill number from QLineEdit
@@ -150,12 +47,7 @@ void CreateBill::saveBillTransaction() {
     // Get account ID based on the supplier account (replace with actual retrieval logic)
     int accountId = ChartOfAccountWindow::getAccountIdFromAccountName(supplierAccount); // Define this method to fetch the account ID
 
-    // Connect to the database
-    QSqlDatabase db = MainWindow::ConnectDatabase();
-    if (!db.isOpen()) {
-        qDebug() << "Failed to open the database!";
-        return;
-    }
+    QSqlDatabase db= MainWindow::ConnectDatabase();
 
     // Prepare SQL query for inserting the bill transaction
     QSqlQuery query(db);
@@ -195,9 +87,8 @@ void CreateBill::saveBillTransaction() {
             qDebug() << "Updated remaining amount for bill:" << billNumber;
         }
     }
-
-    // Close the database connection
     db.close();
+
 }
 
 void CreateBill::saveBillTransactionItems() {

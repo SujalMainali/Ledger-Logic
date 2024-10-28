@@ -22,6 +22,7 @@ CreateInvoice::~CreateInvoice()
 
 void CreateInvoice::on_ItemsTable_cellChanged(int row, int column)
 {
+    ui->ItemsTable->blockSignals(true);
     // Get the total number of columns in the table
     int totalColumns = ui->ItemsTable->columnCount();
 
@@ -45,10 +46,9 @@ void CreateInvoice::on_ItemsTable_cellChanged(int row, int column)
         if (allFilled)
         {
             int row = ui->ItemsTable->rowCount();
-            ui->ItemsTable->blockSignals(true);
             updateAmountInTable(row - 1);
             showTotalAmount();
-            ui->ItemsTable->blockSignals(false);
+
             ui->ItemsTable->insertRow(row);
             setComboBoxInCell(row, 2);
             //ui->ItemsTable->resizeRowsToContents();
@@ -59,6 +59,7 @@ void CreateInvoice::on_ItemsTable_cellChanged(int row, int column)
 
         }
     }
+    ui->ItemsTable->blockSignals(false);
 }
 
 

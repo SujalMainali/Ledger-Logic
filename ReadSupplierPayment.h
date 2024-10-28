@@ -2,6 +2,7 @@
 #define READSUPPLIERPAYMENT_H
 
 #include <QMainWindow>
+#include <QComboBox>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -16,6 +17,17 @@ class ReadSupplierPayment : public QMainWindow
 public:
     ReadSupplierPayment(QWidget *parent = nullptr);
     ~ReadSupplierPayment();
+    void loadDueBills();
+
+private slots:
+    void on_BillsTable_cellDoubleClicked(int row, int column);
+
+
+    void on_Save_clicked();
+
+    void on_pushButton_clicked();
+
+    void on_Cancel_clicked();
 
 private:
     Ui::ReadSupplierPayment *ui;

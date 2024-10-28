@@ -20,6 +20,12 @@ public:
 private slots:
     void on_pushButton_clicked();
 
+    void on_InvoiceTable_cellDoubleClicked(int row, int column);
+
+    void on_Save_clicked();
+
+    void on_Cancel_clicked();
+
 private:
     Ui::ReadPayment *ui;
 };
