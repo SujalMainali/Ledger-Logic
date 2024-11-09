@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>LedgerSummary</class>
- <widget class="QMainWindow" name="LedgerSummary">
+ <class>ActivitySummary</class>
+ <widget class="QMainWindow" name="ActivitySummary">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1182</width>
-    <height>539</height>
+    <width>1196</width>
+    <height>664</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,7 +15,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">background-color:black;
-border:none;</string>
+</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -57,7 +57,7 @@ border:none;</string>
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <widget class="QWidget" name="LogoStack">
+      <widget class="QWidget" name="LogoStack_2">
        <property name="minimumSize">
         <size>
          <width>0</width>
@@ -70,11 +70,11 @@ border:none;</string>
          <height>100</height>
         </size>
        </property>
-       <widget class="QTextEdit" name="Motto">
+       <widget class="QTextEdit" name="Motto_2">
         <property name="geometry">
          <rect>
-          <x>250</x>
-          <y>10</y>
+          <x>260</x>
+          <y>20</y>
           <width>914</width>
           <height>80</height>
          </rect>
@@ -101,7 +101,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;ACCOUNTING MADE EASY&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButton_3">
+       <widget class="QPushButton" name="MainWindow">
         <property name="geometry">
          <rect>
           <x>0</x>
@@ -134,16 +134,20 @@ li.checked::marker { content: &quot;\2612&quot;; }
          </size>
         </property>
        </widget>
-       <zorder>pushButton_3</zorder>
-       <zorder>Motto</zorder>
       </widget>
      </widget>
     </item>
     <item>
      <widget class="QLineEdit" name="lineEdit">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="minimumSize">
        <size>
-        <width>600</width>
+        <width>700</width>
         <height>50</height>
        </size>
       </property>
@@ -155,7 +159,7 @@ font: 900 10pt &quot;Segoe UI Black&quot;;
 </string>
       </property>
       <property name="text">
-       <string>Ledger Summary</string>
+       <string>Account Activity Details</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -163,18 +167,15 @@ font: 900 10pt &quot;Segoe UI Black&quot;;
      </widget>
     </item>
     <item>
-     <widget class="QFrame" name="frame">
+     <widget class="QFrame" name="frame_3">
       <property name="minimumSize">
        <size>
-        <width>300</width>
-        <height>150</height>
+        <width>1000</width>
+        <height>200</height>
        </size>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color:rgb(191,201,194);
-
-
-</string>
+       <string notr="true">background-color:rgb(191 ,189, 180);</string>
       </property>
       <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
@@ -182,14 +183,34 @@ font: 900 10pt &quot;Segoe UI Black&quot;;
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item alignment="Qt::AlignLeft">
-        <widget class="QFrame" name="frame_2">
+      <layout class="QGridLayout" name="gridLayout">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="QFrame" name="frame">
          <property name="minimumSize">
           <size>
-           <width>250</width>
-           <height>0</height>
+           <width>300</width>
+           <height>180</height>
           </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color:rgb(191,201,194);
+
+</string>
          </property>
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
@@ -197,12 +218,33 @@ font: 900 10pt &quot;Segoe UI Black&quot;;
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
+         <widget class="QLineEdit" name="lineEdit_2">
+          <property name="geometry">
+           <rect>
+            <x>60</x>
+            <y>10</y>
+            <width>113</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color:black;
+color:white;
+font: 900 9pt &quot;Segoe UI Black&quot;;</string>
+          </property>
+          <property name="text">
+           <string>Time Period</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
          <widget class="QLineEdit" name="lineEdit_3">
           <property name="geometry">
            <rect>
-            <x>0</x>
-            <y>70</y>
-            <width>113</width>
+            <x>20</x>
+            <y>60</y>
+            <width>91</width>
             <height>31</height>
            </rect>
           </property>
@@ -218,65 +260,12 @@ font: 900 9pt &quot;Segoe UI Black&quot;;</string>
            <set>Qt::AlignCenter</set>
           </property>
          </widget>
-         <widget class="QLineEdit" name="lineEdit_2">
+         <widget class="QLineEdit" name="lineEdit_5">
           <property name="geometry">
            <rect>
-            <x>60</x>
-            <y>10</y>
-            <width>113</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">background-color:black;
-color:white;
-font: 900 9pt &quot;Segoe UI Black&quot;;</string>
-          </property>
-          <property name="text">
-           <string> Time Period</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-         <widget class="QDateEdit" name="ReadFromDate">
-          <property name="geometry">
-           <rect>
-            <x>120</x>
-            <y>70</y>
-            <width>110</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">background-color:grey;</string>
-          </property>
-          <property name="calendarPopup">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </widget>
-       </item>
-       <item alignment="Qt::AlignRight">
-        <widget class="QFrame" name="frame_3">
-         <property name="minimumSize">
-          <size>
-           <width>250</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
-         </property>
-         <widget class="QLineEdit" name="lineEdit_4">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>55</y>
-            <width>113</width>
+            <x>20</x>
+            <y>110</y>
+            <width>91</width>
             <height>31</height>
            </rect>
           </property>
@@ -292,40 +281,46 @@ font: 900 9pt &quot;Segoe UI Black&quot;;</string>
            <set>Qt::AlignCenter</set>
           </property>
          </widget>
-         <widget class="QDateEdit" name="ReadToDate">
+         <widget class="QDateEdit" name="ReadFromDate">
           <property name="geometry">
            <rect>
-            <x>120</x>
-            <y>55</y>
+            <x>140</x>
+            <y>60</y>
             <width>110</width>
             <height>31</height>
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color:grey;</string>
+           <string notr="true">background-color:gray;
+color:black;</string>
           </property>
-          <property name="displayFormat">
-           <string>M/d/yy</string>
+         </widget>
+         <widget class="QDateEdit" name="ReadToDate">
+          <property name="geometry">
+           <rect>
+            <x>140</x>
+            <y>110</y>
+            <width>110</width>
+            <height>31</height>
+           </rect>
           </property>
-          <property name="calendarPopup">
-           <bool>true</bool>
+          <property name="styleSheet">
+           <string notr="true">background-color:gray;
+color:black;</string>
           </property>
          </widget>
          <widget class="QPushButton" name="pushButton">
           <property name="geometry">
            <rect>
-            <x>129</x>
-            <y>100</y>
-            <width>101</width>
-            <height>25</height>
+            <x>90</x>
+            <y>150</y>
+            <width>80</width>
+            <height>31</height>
            </rect>
           </property>
-          <property name="cursor">
-           <cursorShape>PointingHandCursor</cursorShape>
-          </property>
           <property name="styleSheet">
-           <string notr="true">background-color:grey;
-border-radius:10px;</string>
+           <string notr="true">border-radius:10;
+background-color:gray;</string>
           </property>
           <property name="text">
            <string>Search</string>
@@ -333,21 +328,145 @@ border-radius:10px;</string>
          </widget>
         </widget>
        </item>
+       <item row="0" column="1">
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>433</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="2">
+        <widget class="QFrame" name="frame_2">
+         <property name="minimumSize">
+          <size>
+           <width>400</width>
+           <height>150</height>
+          </size>
+         </property>
+         <property name="sizeIncrement">
+          <size>
+           <width>400</width>
+           <height>150</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color:rgb(191,201,194);
+
+</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <widget class="QLineEdit" name="lineEdit_7">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>20</y>
+            <width>181</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color:black;
+color:white;
+font: 900 9pt &quot;Segoe UI Black&quot;;</string>
+          </property>
+          <property name="text">
+           <string>Beginning Balance</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="ReadOpeningBalance">
+          <property name="geometry">
+           <rect>
+            <x>230</x>
+            <y>20</y>
+            <width>161</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color:gray;
+color:black;
+font: 900 9pt &quot;Segoe UI Black&quot;;</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="lineEdit_8">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>80</y>
+            <width>181</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color:black;
+color:white;
+font: 900 9pt &quot;Segoe UI Black&quot;;</string>
+          </property>
+          <property name="text">
+           <string>Ending Balance</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="ReadClosingBalance">
+          <property name="geometry">
+           <rect>
+            <x>230</x>
+            <y>80</y>
+            <width>161</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color:gray;
+color:black;
+font: 900 9pt &quot;Segoe UI Black&quot;;</string>
+          </property>
+         </widget>
+        </widget>
+       </item>
       </layout>
      </widget>
     </item>
-    <item>
-     <widget class="QTableWidget" name="LedgerTable">
+    <item alignment="Qt::AlignHCenter">
+     <widget class="QLineEdit" name="LabelAccount">
       <property name="minimumSize">
        <size>
-        <width>1000</width>
-        <height>200</height>
+        <width>500</width>
+        <height>40</height>
        </size>
       </property>
-      <property name="sizeIncrement">
+      <property name="styleSheet">
+       <string notr="true">background-color:gray;
+color:black;
+font: 900 9pt &quot;Segoe UI Black&quot;;</string>
+      </property>
+      <property name="text">
+       <string>Here is the Activity for selected account</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QTableWidget" name="ActivityTable">
+      <property name="minimumSize">
        <size>
-        <width>90</width>
-        <height>0</height>
+        <width>1100</width>
+        <height>200</height>
        </size>
       </property>
       <property name="styleSheet">
@@ -394,39 +513,39 @@ QTableWidget QScrollBar::handle:vertical {
        <number>0</number>
       </property>
       <attribute name="horizontalHeaderDefaultSectionSize">
-       <number>200</number>
+       <number>220</number>
       </attribute>
       <attribute name="horizontalHeaderStretchLastSection">
        <bool>true</bool>
       </attribute>
       <column>
        <property name="text">
-        <string>Account Number</string>
+        <string>Transaction Date</string>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>Account Name</string>
+        <string>Journal Number</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>BY</string>
        </property>
       </column>
       <column>
        <property name="text">
         <string>Beginning Balance</string>
        </property>
-       <property name="font">
-        <font>
-         <pointsize>9</pointsize>
-        </font>
+      </column>
+      <column>
+       <property name="text">
+        <string>Debit</string>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>Debit Total</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Credit Total</string>
+        <string>Credit</string>
        </property>
       </column>
       <column>
@@ -439,6 +558,16 @@ QTableWidget QScrollBar::handle:vertical {
    </layout>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1196</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

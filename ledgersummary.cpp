@@ -1,11 +1,15 @@
 #include "ledgersummary.h"
 #include "./ui_ledgersummary.h"
 #include "mainwindow.h"
+#include "accountactivity.h"
 #include <QSql>
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QCoreApplication>
+
+int LedgerSummary::AccountId = 0;
+QString LedgerSummary::AccountName="";
 
 LedgerSummary::LedgerSummary(QWidget *parent)
     : QMainWindow(parent)
@@ -46,8 +50,6 @@ void LedgerSummary::loadLedgerData(QDate startDate, QDate endDate) {
         JournalEntryLines JEL ON A.account_id = JEL.account_id
     LEFT JOIN
         JournalEntries JE ON JEL.journal_id = JE.journal_id AND JE.date BETWEEN :start_date AND :end_date
-    WHERE
-        JE.journal_id IS NOT NULL  -- Ensure only JournalEntries within the date range are considered
     GROUP BY
         A.account_id, A.account_name, AB.opening_balance
     ORDER BY
@@ -68,7 +70,6 @@ void LedgerSummary::loadLedgerData(QDate startDate, QDate endDate) {
 
     int row = 0;
     while (query.next()) {
-        qDebug()<<"Loop Executed "<<row;
         // Insert a new row for each account in the result
         ui->LedgerTable->insertRow(row);
 
@@ -114,4 +115,20 @@ void LedgerSummary::on_pushButton_3_clicked()
     this->close();
     delete this;
 }
+
+
+void LedgerSummary::on_LedgerTable_itemDoubleClicked(QTableWidgetItem *item)
+{
+    AccountId=ui->LedgerTable->item(item->row(),0)->text().toInt();
+    AccountName=ui->LedgerTable->item(item->row(),1)->text();
+    ActivitySummary* ActivityWin=new ActivitySummary();
+    QSize currentSize = this->size();
+    QPoint currentPosition = this->pos();
+    ActivityWin->resize(currentSize);
+    ActivityWin->move(currentPosition);
+    qDebug()<<"Selected Account"<<AccountId<<AccountName;
+    ActivityWin->show();
+    this->close();
+}
+
 

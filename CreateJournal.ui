@@ -306,6 +306,9 @@ font: 900 9pt &quot;Segoe UI Black&quot;;</string>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
          </property>
+         <property name="calendarPopup">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
       </layout>

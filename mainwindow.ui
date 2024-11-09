@@ -221,8 +221,79 @@ color:black;
                </property>
               </spacer>
              </item>
-             <item row="15" column="0">
-              <spacer name="verticalSpacer_7">
+             <item row="13" column="0">
+              <spacer name="verticalSpacer_5">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item row="2" column="0">
+              <widget class="QPushButton" name="Sales">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>60</height>
+                </size>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string>Sales</string>
+               </property>
+              </widget>
+             </item>
+             <item row="17" column="0">
+              <spacer name="verticalSpacer_9">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item row="12" column="0">
+              <spacer name="verticalSpacer_4">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item row="8" column="0">
+              <widget class="QPushButton" name="pushButton_2">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>60</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>LedgerSummary</string>
+               </property>
+              </widget>
+             </item>
+             <item row="16" column="0">
+              <spacer name="verticalSpacer_8">
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
                </property>
@@ -266,32 +337,6 @@ color:black;
                </property>
               </widget>
              </item>
-             <item row="16" column="0">
-              <spacer name="verticalSpacer_8">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item row="17" column="0">
-              <spacer name="verticalSpacer_9">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
              <item row="0" column="0">
               <widget class="QPushButton" name="Purchase">
                <property name="minimumSize">
@@ -310,32 +355,6 @@ color:black;
                 <string>Purchases</string>
                </property>
               </widget>
-             </item>
-             <item row="7" column="0">
-              <widget class="QPushButton" name="pushButton">
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>60</height>
-                </size>
-               </property>
-               <property name="text">
-                <string>CreateJournal</string>
-               </property>
-              </widget>
-             </item>
-             <item row="12" column="0">
-              <spacer name="verticalSpacer_4">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
              </item>
              <item row="6" column="0">
               <widget class="QPushButton" name="Reporting">
@@ -356,8 +375,8 @@ color:black;
                </property>
               </widget>
              </item>
-             <item row="13" column="0">
-              <spacer name="verticalSpacer_5">
+             <item row="14" column="0">
+              <spacer name="verticalSpacer_6">
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
                </property>
@@ -368,25 +387,6 @@ color:black;
                 </size>
                </property>
               </spacer>
-             </item>
-             <item row="2" column="0">
-              <widget class="QPushButton" name="Sales">
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>60</height>
-                </size>
-               </property>
-               <property name="cursor">
-                <cursorShape>PointingHandCursor</cursorShape>
-               </property>
-               <property name="styleSheet">
-                <string notr="true"/>
-               </property>
-               <property name="text">
-                <string>Sales</string>
-               </property>
-              </widget>
              </item>
              <item row="11" column="0">
               <spacer name="verticalSpacer_3">
@@ -401,8 +401,21 @@ color:black;
                </property>
               </spacer>
              </item>
-             <item row="14" column="0">
-              <spacer name="verticalSpacer_6">
+             <item row="7" column="0">
+              <widget class="QPushButton" name="pushButton">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>60</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>CreateJournal</string>
+               </property>
+              </widget>
+             </item>
+             <item row="15" column="0">
+              <spacer name="verticalSpacer_7">
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
                </property>
@@ -413,19 +426,6 @@ color:black;
                 </size>
                </property>
               </spacer>
-             </item>
-             <item row="8" column="0">
-              <widget class="QPushButton" name="pushButton_2">
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>60</height>
-                </size>
-               </property>
-               <property name="text">
-                <string>LedgerSummary</string>
-               </property>
-              </widget>
              </item>
             </layout>
            </widget>

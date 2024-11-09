@@ -74,6 +74,11 @@ set(PROJECT_SOURCES
     ledgersummary.cpp
     ledgersummary.h
     ledgersummary.ui
+
+    #including Account Activity Window
+    accountactivity.cpp
+    accountactivity.h
+    accountactivity.ui
 )
 
 # Specify the path to your database file

@@ -179,5 +179,8 @@ void CreateJournal::on_AddRow_clicked()
     ui->JournalTable->insertRow(rowCount);
     ui->JournalTable->setItem(rowCount,1,debitItem);
     ui->JournalTable->setItem(rowCount, 2, creditItem);
-}
+    QSqlDatabase db= MainWindow::ConnectDatabase();
+    InvoiceBillFunctions::setComboBoxInCell(ui->JournalTable,rowCount,0,db);
+    db.close();
+ }
 
