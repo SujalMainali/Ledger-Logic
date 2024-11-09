@@ -64,6 +64,11 @@ set(PROJECT_SOURCES
     #Including Function Files
     invoicebillfunctions.cpp
     invoicebillfunctions.h
+
+    #Including Create Journal
+    CreateJournal.cpp
+    CreateJournal.h
+    CreateJournal.ui
 )
 
 # Specify the path to your database file

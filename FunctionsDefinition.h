@@ -10,6 +10,7 @@
 #include "create1.h"
 #include "CreateBill.h"
 #include "ReadSupplierPayment.h"
+#include "CreateJournal.h"
 
 
 
@@ -180,4 +181,16 @@ void MainWindow::on_RecordBillPayment_clicked()
     delete this;
 }
 
+void MainWindow::on_pushButton_clicked()
+{
+    CreateJournal* JournalWin=new CreateJournal();
+    QSize currentSize = this->size();
+    QPoint currentPosition = this->pos();
+    JournalWin->resize(currentSize);
+    JournalWin->move(currentPosition);
+    JournalWin->show();
+    this->close();
+    delete this;
+
+}
 #endif // FUNCTIONSDEFINITION_H

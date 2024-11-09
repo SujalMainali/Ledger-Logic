@@ -401,6 +401,19 @@ color:black;
                </property>
               </spacer>
              </item>
+             <item row="7" column="0">
+              <widget class="QPushButton" name="pushButton">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>60</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>CreateJournal</string>
+               </property>
+              </widget>
+             </item>
             </layout>
            </widget>
           </item>
