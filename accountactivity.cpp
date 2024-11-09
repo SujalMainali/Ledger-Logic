@@ -38,48 +38,54 @@ void ActivitySummary::loadLedgerData(int accountId) {
         return;
     }
 
-    double openingBalance = fetchOpeningBalance(accountId,db);
+    double openingBalance = fetchOpeningBalance(accountId, db);
     double runningBalance = openingBalance;
 
     ui->ReadOpeningBalance->setText(QString::number(openingBalance, 'f', 2));
 
-    //Remember to fix the time period issue
-
-
+    // SQL query to fetch journal entries for the selected account
     QSqlQuery query;
+
+    //Need to work on multi entry in same table
+
     query.prepare("SELECT je.date, je.journal_number, "
-                  "CASE WHEN jel.is_debit THEN coa_credit.account_name ELSE coa_debit.account_name END AS by_account, "
+                  "coa_opposing.account_name AS by_account, "
                   "jel.amount, jel.is_debit "
                   "FROM JournalEntries je "
                   "JOIN JournalEntryLines jel ON je.journal_id = jel.journal_id "
-                  "JOIN ChartOfAccounts coa_credit ON jel.account_id = coa_credit.account_id "
-                  "LEFT JOIN JournalEntryLines jel_opposite ON jel_opposite.journal_id = jel.journal_id "
-                  "AND jel_opposite.entry_line_id != jel.entry_line_id "
-                  "LEFT JOIN ChartOfAccounts coa_debit ON jel_opposite.account_id = coa_debit.account_id "
+                  "JOIN ChartOfAccounts coa ON coa.account_id = jel.account_id "
+                  "LEFT JOIN JournalEntryLines jel_opposing ON jel_opposing.journal_id = jel.journal_id "
+                  "AND jel_opposing.entry_line_id != jel.entry_line_id "
+                  "LEFT JOIN ChartOfAccounts coa_opposing ON jel_opposing.account_id = coa_opposing.account_id "
                   "WHERE jel.account_id = :accountId "
                   "ORDER BY je.date");
-    query.bindValue(":accountId", accountId);
+
+    query.bindValue(":accountId", accountId);  // Ensure this parameter is properly bound
 
     if (!query.exec()) {
         qDebug() << "Error fetching ledger data:" << query.lastError();
         return;
     }
 
+    // Populate rows based on query results
     int row = 0;
     while (query.next()) {
         ui->ActivityTable->insertRow(row);
+
+        // Fetch data from each column
         QDate date = query.value("date").toDate();
         QString journalNumber = query.value("journal_number").toString();
-        QString byAccount = query.value("by_account").toString();
+        QString byAccount = query.value("by_account").toString();  // Ensure correct column alias here
         double amount = query.value("amount").toDouble();
         bool isDebit = query.value("is_debit").toBool();
 
+        // Calculate balances
         double beginningBalance = runningBalance;
         double debit = isDebit ? amount : 0.0;
         double credit = isDebit ? 0.0 : amount;
-
         runningBalance += debit - credit;
 
+        // Populate table cells
         ui->ActivityTable->setItem(row, 0, new QTableWidgetItem(date.toString("yyyy-MM-dd")));
         ui->ActivityTable->setItem(row, 1, new QTableWidgetItem(journalNumber));
         ui->ActivityTable->setItem(row, 2, new QTableWidgetItem(byAccount));
@@ -90,9 +96,15 @@ void ActivitySummary::loadLedgerData(int accountId) {
 
         row++;
     }
+
+    // Display closing balance
     ui->ReadClosingBalance->setText(QString::number(runningBalance, 'f', 2));
     db.close();
+
 }
+
+
+
 
 
 void ActivitySummary::on_MainWindow_clicked()

@@ -13,6 +13,7 @@ CreateJournal::CreateJournal(QWidget *parent)
     InvoiceBillFunctions::setComboBoxInCell(ui->JournalTable,0,0,db);
     InvoiceBillFunctions::setComboBoxInCell(ui->JournalTable,1,0,db);
     db.close();
+    ui->AddRow->setVisible(false);
 }
 
 CreateJournal::~CreateJournal()

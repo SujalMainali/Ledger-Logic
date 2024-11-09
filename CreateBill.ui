@@ -320,12 +320,12 @@ font: 900 9pt &quot;Segoe UI Black&quot;;</string>
             </property>
             <property name="dateTime">
              <datetime>
-              <hour>1</hour>
-              <minute>0</minute>
+              <hour>19</hour>
+              <minute>15</minute>
               <second>0</second>
               <year>2023</year>
               <month>12</month>
-              <day>31</day>
+              <day>30</day>
              </datetime>
             </property>
            </widget>
@@ -382,12 +382,12 @@ font: 900 9pt &quot;Segoe UI Black&quot;;</string>
             </property>
             <property name="dateTime">
              <datetime>
-              <hour>1</hour>
-              <minute>0</minute>
+              <hour>19</hour>
+              <minute>15</minute>
               <second>0</second>
               <year>2023</year>
               <month>12</month>
-              <day>31</day>
+              <day>30</day>
              </datetime>
             </property>
            </widget>
@@ -431,13 +431,13 @@ font: 900 9pt &quot;Segoe UI Black&quot;;</string>
       <property name="minimumSize">
        <size>
         <width>600</width>
-        <height>70</height>
+        <height>100</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
         <width>16777215</width>
-        <height>70</height>
+        <height>100</height>
        </size>
       </property>
       <property name="styleSheet">
