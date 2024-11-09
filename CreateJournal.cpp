@@ -66,9 +66,15 @@ void CreateJournal::UpdateAccountBalances(int accountId, double amount, bool isD
 
 void CreateJournal::on_Save_clicked()
 {
-    QString journalNo = ui->ReadJournalNo ->text();
-    QString date = ui->ReadDate ->text();
+    QString journalNo = ui->ReadJournalNo->text();
+    QString date = ui->ReadDate->text();
     QString memo = ui->ReadDescription->toPlainText();
+
+    // Check if any required fields are empty
+    if (journalNo.isEmpty() || date.isEmpty() || memo.isEmpty()) {
+        QMessageBox::warning(this, "Input Error", "Please fill in all required fields before saving.");
+        return; // Exit the function if any of the required fields are empty
+    }
 
     // Connect to the database
     QSqlDatabase db = MainWindow::ConnectDatabase();
@@ -94,20 +100,26 @@ void CreateJournal::on_Save_clicked()
 
     QComboBox *comboBox;
     // Insert each line from the journalTableWidget into JournalEntryLines
-    for (int row = 0; row < ui->JournalTable ->rowCount(); ++row) {
+    for (int row = 0; row < ui->JournalTable->rowCount(); ++row) {
         comboBox = qobject_cast<QComboBox*>(ui->JournalTable->cellWidget(row, 0));
-        QString accountName= comboBox->currentText();
+        QString accountName = comboBox->currentText();
         QString debitStr = ui->JournalTable->item(row, 1)->text();
         QString creditStr = ui->JournalTable->item(row, 2)->text();
+
+        // Check if any of the required cells are empty or contain invalid values
+        if (accountName.isEmpty() || debitStr.isEmpty() || creditStr.isEmpty()) {
+            QMessageBox::warning(this, "Input Error", "Please fill in all fields in the journal table. Enter 0 in either the debit or credit field.");
+            return; // Exit the function if any fields are empty
+        }
 
         double amount = 0.0;
         bool isDebit = false;
 
-        // Determine if the entry is a debit or credit
-        if (!debitStr.isEmpty()) {
+        // Check if the debit or credit is zero instead of empty
+        if (debitStr.toDouble() != 0.0) {
             amount = debitStr.toDouble();
             isDebit = true;
-        } else if (!creditStr.isEmpty()) {
+        } else if (creditStr.toDouble() != 0.0) {
             amount = creditStr.toDouble();
             isDebit = false;
         }
@@ -135,20 +147,15 @@ void CreateJournal::on_Save_clicked()
         if (!lineQuery.exec()) {
             qDebug() << "Error inserting journal entry line:" << lineQuery.lastError().text();
         }
-        UpdateAccountBalances(accountId, amount, isDebit,db);
+
+        UpdateAccountBalances(accountId, amount, isDebit, db);
     }
 
     db.close();
     qDebug() << "Journal entry and lines saved successfully!";
-    MainWindow *MainWin=new MainWindow();
-    QSize currentSize = this->size();
-    QPoint currentPosition = this->pos();
-    MainWin->resize(currentSize);
-    MainWin->move(currentPosition);
-    MainWin->show();
-    this->close();
-    delete this;
 }
+
+
 
 
 void CreateJournal::on_Cancel_clicked()
@@ -161,5 +168,16 @@ void CreateJournal::on_Cancel_clicked()
     MainWin->show();
     this->close();
     delete this;
+}
+
+
+void CreateJournal::on_AddRow_clicked()
+{
+    int rowCount=ui->JournalTable->rowCount();
+    QTableWidgetItem *debitItem = new QTableWidgetItem("0.0");
+    QTableWidgetItem *creditItem = new QTableWidgetItem("0.0");
+    ui->JournalTable->insertRow(rowCount);
+    ui->JournalTable->setItem(rowCount,1,debitItem);
+    ui->JournalTable->setItem(rowCount, 2, creditItem);
 }
 

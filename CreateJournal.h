@@ -24,6 +24,8 @@ private slots:
 
     void on_Cancel_clicked();
 
+    void on_AddRow_clicked();
+
 private:
     Ui::CreateJournal *ui;
 };

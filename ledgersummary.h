@@ -15,7 +15,14 @@ class LedgerSummary : public QMainWindow
 
 public:
     LedgerSummary(QWidget *parent = nullptr);
+    void loadLedgerData(QDate startDate, QDate endDate) ;
+
     ~LedgerSummary();
+
+private slots:
+    void on_pushButton_clicked();
+
+    void on_pushButton_3_clicked();
 
 private:
     Ui::LedgerSummary *ui;

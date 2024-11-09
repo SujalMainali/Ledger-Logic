@@ -69,6 +69,11 @@ set(PROJECT_SOURCES
     CreateJournal.cpp
     CreateJournal.h
     CreateJournal.ui
+
+    #Including Ledger Summary
+    ledgersummary.cpp
+    ledgersummary.h
+    ledgersummary.ui
 )
 
 # Specify the path to your database file

@@ -11,6 +11,7 @@
 #include "CreateBill.h"
 #include "ReadSupplierPayment.h"
 #include "CreateJournal.h"
+#include "ledgersummary.h"
 
 
 
@@ -193,4 +194,16 @@ void MainWindow::on_pushButton_clicked()
     delete this;
 
 }
+void MainWindow::on_pushButton_2_clicked()
+{
+    LedgerSummary *LedgerSummaryWin=new LedgerSummary();
+    QSize currentSize = this->size();
+    QPoint currentPosition = this->pos();
+    LedgerSummaryWin->resize(currentSize);
+    LedgerSummaryWin->move(currentPosition);
+    LedgerSummaryWin->show();
+    this->close();
+    delete this;
+}
+
 #endif // FUNCTIONSDEFINITION_H

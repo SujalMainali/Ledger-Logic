@@ -245,7 +245,7 @@ font: 900 9pt &quot;Segoe UI Black&quot;;</string>
             <x>120</x>
             <y>70</y>
             <width>110</width>
-            <height>26</height>
+            <height>31</height>
            </rect>
           </property>
           <property name="styleSheet">
@@ -272,9 +272,9 @@ font: 900 9pt &quot;Segoe UI Black&quot;;</string>
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>70</y>
+            <y>55</y>
             <width>113</width>
-            <height>26</height>
+            <height>31</height>
            </rect>
           </property>
           <property name="styleSheet">
@@ -293,13 +293,39 @@ font: 900 9pt &quot;Segoe UI Black&quot;;</string>
           <property name="geometry">
            <rect>
             <x>120</x>
-            <y>70</y>
+            <y>55</y>
             <width>110</width>
-            <height>26</height>
+            <height>31</height>
            </rect>
           </property>
           <property name="styleSheet">
            <string notr="true">background-color:grey;</string>
+          </property>
+          <property name="displayFormat">
+           <string>M/d/yy</string>
+          </property>
+          <property name="calendarPopup">
+           <bool>true</bool>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="pushButton">
+          <property name="geometry">
+           <rect>
+            <x>129</x>
+            <y>100</y>
+            <width>101</width>
+            <height>25</height>
+           </rect>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color:grey;
+border-radius:10px;</string>
+          </property>
+          <property name="text">
+           <string>Search</string>
           </property>
          </widget>
         </widget>
@@ -373,11 +399,6 @@ QTableWidget QScrollBar::handle:vertical {
       <column>
        <property name="text">
         <string>Account Number</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Type</string>
        </property>
       </column>
       <column>
