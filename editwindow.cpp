@@ -177,6 +177,22 @@ void EditWindow::on_Save_clicked() {
         qDebug() << "Account details updated successfully.";
     }
 
+    if (!isParentAccount) {
+        QSqlQuery balanceQuery;
+        balanceQuery.prepare("INSERT INTO AccountBalances (account_id, opening_balance) "
+                             "VALUES (:account_id, :opening_balance) "
+                             "ON CONFLICT(account_id) DO UPDATE SET opening_balance = :opening_balance");
+        balanceQuery.bindValue(":account_id", currentaccountId);
+        balanceQuery.bindValue(":opening_balance", ui->ReadBalance->text().toDouble());
+
+        if (!balanceQuery.exec()) {
+            qDebug() << "Failed to update opening balance in AccountBalances:" << balanceQuery.lastError().text();
+            return;
+        } else {
+            qDebug() << "Opening balance updated successfully in AccountBalances table.";
+        }
+    }
+
     // Close the database connection
 
     ChartOfAccountWindow* ChartWin = new ChartOfAccountWindow();
