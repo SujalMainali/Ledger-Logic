@@ -18,6 +18,9 @@ public:
     QStandardItemModel *model;
     ~PLAccount();
 
+private slots:
+    void on_LogoButton_clicked();
+
 private:
     Ui::PLAccount *ui;
 };

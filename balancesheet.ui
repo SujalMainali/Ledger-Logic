@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>PLAccount</class>
- <widget class="QMainWindow" name="PLAccount">
+ <class>BalanceSheet</class>
+ <widget class="QMainWindow" name="BalanceSheet">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1299</width>
+    <width>1312</width>
     <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>PLAccount</string>
+   <string>BalanceSheet</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color:black;
-color:white;</string>
+   <string notr="true">background-color:black;</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="styleSheet">
@@ -80,7 +79,7 @@ QTreeView::item {
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <widget class="QWidget" name="LogoStack">
+      <widget class="QWidget" name="LogoStack_2">
        <property name="minimumSize">
         <size>
          <width>0</width>
@@ -93,7 +92,7 @@ QTreeView::item {
          <height>100</height>
         </size>
        </property>
-       <widget class="QTextEdit" name="Motto">
+       <widget class="QTextEdit" name="Motto_2">
         <property name="geometry">
          <rect>
           <x>250</x>
@@ -158,7 +157,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
         </property>
        </widget>
        <zorder>LogoButton</zorder>
-       <zorder>Motto</zorder>
+       <zorder>Motto_2</zorder>
       </widget>
      </widget>
     </item>
@@ -166,7 +165,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <widget class="QLineEdit" name="Title">
       <property name="minimumSize">
        <size>
-        <width>300</width>
+        <width>400</width>
         <height>40</height>
        </size>
       </property>
@@ -175,8 +174,11 @@ li.checked::marker { content: &quot;\2612&quot;; }
         <pointsize>15</pointsize>
        </font>
       </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:gray;</string>
+      </property>
       <property name="text">
-       <string>PROFIT AND LOSS ACCOUNT FROM _______ TO ___________</string>
+       <string>BALANCE SHEET AT ___________</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -186,17 +188,11 @@ li.checked::marker { content: &quot;\2612&quot;; }
       </property>
      </widget>
     </item>
-    <item>
-     <widget class="QFrame" name="frame">
+    <item alignment="Qt::AlignRight">
+     <widget class="QFrame" name="DateFrame">
       <property name="minimumSize">
        <size>
-        <width>0</width>
-        <height>50</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>16777215</width>
+        <width>150</width>
         <height>50</height>
        </size>
       </property>
@@ -206,105 +202,19 @@ li.checked::marker { content: &quot;\2612&quot;; }
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <widget class="QLineEdit" name="lineEdit">
+        <widget class="QDateEdit" name="ReadDate">
          <property name="minimumSize">
           <size>
-           <width>100</width>
+           <width>0</width>
            <height>40</height>
           </size>
          </property>
          <property name="maximumSize">
-          <size>
-           <width>100</width>
-           <height>100</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">background-color:gray;</string>
-         </property>
-         <property name="text">
-          <string>FROM</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QDateEdit" name="ReadFromDate">
-         <property name="minimumSize">
           <size>
            <width>150</width>
-           <height>40</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">background-color:gray;</string>
-         </property>
-         <property name="calendarPopup">
-          <bool>true</bool>
-         </property>
-         <property name="date">
-          <date>
-           <year>2024</year>
-           <month>10</month>
-           <day>1</day>
-          </date>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>752</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="lineEdit_2">
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>40</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>100</width>
            <height>16777215</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">background-color:gray;</string>
-         </property>
-         <property name="text">
-          <string>TO</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QDateEdit" name="ReadToDate">
-         <property name="minimumSize">
-          <size>
-           <width>150</width>
-           <height>40</height>
           </size>
          </property>
          <property name="styleSheet">
@@ -326,15 +236,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
      </widget>
     </item>
     <item>
-     <widget class="QTreeView" name="PLTable">
-      <property name="autoExpandDelay">
-       <number>2</number>
-      </property>
+     <widget class="QTreeView" name="BalanceSheetTable">
       <attribute name="headerMinimumSectionSize">
-       <number>500</number>
-      </attribute>
-      <attribute name="headerDefaultSectionSize">
-       <number>100</number>
+       <number>700</number>
       </attribute>
      </widget>
     </item>

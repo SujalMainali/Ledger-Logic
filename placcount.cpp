@@ -92,3 +92,16 @@ PLAccount::~PLAccount()
 }
 
 
+
+void PLAccount::on_LogoButton_clicked()
+{
+    MainWindow *MainWin=new MainWindow();
+    QSize currentSize = this->size();
+    QPoint currentPosition = this->pos();
+    MainWin->resize(currentSize);
+    MainWin->move(currentPosition);
+    MainWin->show();
+    this->close();
+    delete this;
+}
+

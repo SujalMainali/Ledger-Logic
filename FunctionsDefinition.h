@@ -14,6 +14,7 @@
 #include "ledgersummary.h"
 #include "trialbalance.h"
 #include "placcount.h"
+#include "balancesheet.h"
 
 
 
@@ -221,6 +222,17 @@ void MainWindow::on_PLReport_clicked()
     PLAccountWin->move(currentPosition);
     PLAccountWin->show();
     this->close();
+}
+
+void MainWindow::on_BalanceSheet_clicked()
+{
+    BalanceSheet *BalanceSheetWin=new BalanceSheet();
+        QSize currentSize = this->size();
+        QPoint currentPosition = this->pos();
+        BalanceSheetWin->resize(currentSize);
+        BalanceSheetWin->move(currentPosition);
+        BalanceSheetWin->show();
+        this->close();
 }
 
 #endif // FUNCTIONSDEFINITION_H

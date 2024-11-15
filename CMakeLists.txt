@@ -90,6 +90,11 @@ set(PROJECT_SOURCES
     placcount.h
     placcount.ui
 
+    #including Balance Sheet
+    balancesheet.cpp
+    balancesheet.h
+    balancesheet.ui
+
 )
 
 # Specify the path to your database file

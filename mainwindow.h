@@ -59,6 +59,8 @@ private slots:
 
     void on_PLReport_clicked();
 
+    void on_BalanceSheet_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
