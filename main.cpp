@@ -7,7 +7,18 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow * w= new MainWindow();
-    w->showMaximized();
-    return a.exec();
+
+    MainWindow w;
+    w.show();
+
+    int result = a.exec();
+
+    // Close the database after the event loop ends
+    if (MainWindow::db.isOpen()) {
+        MainWindow::db.close();
+        qDebug() << "Database connection closed in main.";
+    }
+    QSqlDatabase::removeDatabase(QSqlDatabase::defaultConnection);
+
+    return result;
 }

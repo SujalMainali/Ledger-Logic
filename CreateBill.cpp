@@ -12,7 +12,7 @@ CreateBill::CreateBill(QWidget *parent)
     , ui(new Ui::CreateBill)
 {
     ui->setupUi(this);
-    QSqlDatabase db=MainWindow::ConnectDatabase();
+    QSqlDatabase db=MainWindow::db;
     InvoiceBillFunctions::setComboBoxInCell(ui->ItemsTable,0, 2,db);
     InvoiceBillFunctions::populateComboBoxWithAccounts(ui->ShowAccounts,db);
 }
@@ -48,7 +48,7 @@ void CreateBill::saveBillTransaction() {
     // Get account ID based on the supplier account (replace with actual retrieval logic)
     int accountId = ChartOfAccountWindow::getAccountIdFromAccountName(supplierAccount); // Define this method to fetch the account ID
 
-    QSqlDatabase db= MainWindow::ConnectDatabase();
+    QSqlDatabase db= MainWindow::db;
 
     // Prepare SQL query for inserting the bill transaction
     QSqlQuery query(db);
@@ -88,7 +88,6 @@ void CreateBill::saveBillTransaction() {
             qDebug() << "Updated remaining amount for bill:" << billNumber;
         }
     }
-    db.close();
 
 }
 
@@ -100,7 +99,7 @@ void CreateBill::saveBillTransactionItems() {
         return;
     }
 
-    QSqlDatabase db = MainWindow::ConnectDatabase();
+    QSqlDatabase db = MainWindow::db;
     if (!db.isOpen()) {
         qDebug() << "Failed to open the database!";
         return;
@@ -144,8 +143,110 @@ void CreateBill::saveBillTransactionItems() {
             qDebug() << "Inserted row for product:" << productName;
         }
     }
-    db.close();
 }
+void CreateBill::createJournalEntryForBill() {
+
+    QString billNumber = ui->ReadBillNumber->text();
+    QString supplierAccountName = ui->ShowAccounts->currentText();
+    int supplierAccountId = ChartOfAccountWindow::getAccountIdFromAccountName(supplierAccountName);
+
+    QSqlDatabase db = MainWindow::db;
+    if (!db.isOpen()) {
+        qDebug() << "Failed to open the database!";
+        return;
+    }
+
+    QSqlQuery query(db);
+
+    // Step 1: Fetch Bill Date and Total Amount
+    query.prepare("SELECT transaction_date, total_amount FROM BillTransactions WHERE bill_number = :bill_number");
+    query.bindValue(":bill_number", billNumber);
+
+    QDate billDate;
+    double totalAmount = 0.0;
+    if (query.exec() && query.next()) {
+        billDate = query.value("transaction_date").toDate();
+        totalAmount = query.value("total_amount").toDouble();
+    } else {
+        qDebug() << "Failed to fetch bill details:" << query.lastError().text();
+        return;
+    }
+
+    // Step 2: Extract integer part from Bill Number to form Journal Number
+    QString billNumberIntPart = billNumber;
+    billNumberIntPart.remove(0, 3);  // Remove 'BILL' prefix to get the integer part
+    QString journalNumber = "BILLGJ" + billNumberIntPart;
+
+    // Step 3: Create a new Journal Entry in JournalEntries
+    QString journalMemo = "Bill " + billNumber + " Posting";
+
+    query.prepare("INSERT INTO JournalEntries (journal_number, date, memo) "
+                  "VALUES (:journal_number, :date, :memo)");
+    query.bindValue(":journal_number", journalNumber);
+    query.bindValue(":date", billDate);
+    query.bindValue(":memo", journalMemo);
+
+    if (!query.exec()) {
+        qDebug() << "Failed to insert journal entry:" << query.lastError().text();
+        return;
+    }
+
+    int journalId = query.lastInsertId().toInt();
+
+    // Step 4: Credit Supplier Account with Total Amount
+    QSqlQuery lineQuery(db);
+    lineQuery.prepare("INSERT INTO JournalEntryLines (journal_id, account_id, amount, is_debit) "
+                      "VALUES (:journal_id, :account_id, :amount, :is_debit)");
+    lineQuery.bindValue(":journal_id", journalId);
+    lineQuery.bindValue(":account_id", supplierAccountId);
+    lineQuery.bindValue(":amount", totalAmount);
+    lineQuery.bindValue(":is_debit", false);  // Credit supplier account (is_debit = false)
+
+    if (!lineQuery.exec()) {
+        qDebug() << "Failed to insert credit line for supplier:" << lineQuery.lastError().text();
+        return;
+    }
+
+    // Step 5: Debit Accounts based on UI Table Data
+    int rowCount = ui->ItemsTable->rowCount();
+    for (int row = 0; row < rowCount-1; ++row) {
+        // Get the amount from the UI table
+        double amount = ui->ItemsTable->item(row, 5) ? ui->ItemsTable->item(row, 5)->text().toDouble() : 0.0;
+
+        // Retrieve the QComboBox from the table cell for the account name
+        QComboBox *comboBox = qobject_cast<QComboBox*>(ui->ItemsTable->cellWidget(row, 2)); // Assuming account name is in column 2
+        QString accountName;
+        if (comboBox) {
+            accountName = comboBox->currentText();
+        } else {
+            qDebug() << "No combo box found at row" << row << "column 2";
+            continue; // Skip this iteration if no combo box is found
+        }
+
+        // Get the account ID for the selected account
+        int accountId = ChartOfAccountWindow::getAccountIdFromAccountName(accountName);
+        if (accountId == -1) {
+            qDebug() << "Failed to find account ID for account name:" << accountName;
+            continue;
+        }
+
+        // Directly construct the SQL query string with the values
+        QSqlQuery debitLineQuery;
+        QString queryString = QString("INSERT INTO JournalEntryLines (journal_id, account_id, amount, is_debit) "
+                                      "VALUES (%1, %2, %3, %4)")
+                                      .arg(journalId)
+                                      .arg(accountId)
+                                      .arg(amount)
+                                      .arg(true); // `true` is 1 in SQL, indicating a debit
+
+        if (!debitLineQuery.exec(queryString)) {
+            qDebug() << "Failed to insert debit line for account:"
+                     << accountName << "with error:" << debitLineQuery.lastError().text();
+        }
+    }
+
+}
+
 
 void CreateBill::on_Cancel_clicked()
 {
@@ -166,6 +267,7 @@ void CreateBill::on_Save_clicked()
 {
     saveBillTransaction();
     saveBillTransactionItems();
+    createJournalEntryForBill();
     MainWindow *MainWin=new MainWindow();
     QSize currentSize = this->size();
     QPoint currentPosition = this->pos();

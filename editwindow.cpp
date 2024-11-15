@@ -3,6 +3,7 @@
 #include<QtSql>
 #include "mainwindow.h"
 #include "chartofaccountwindow.h"
+#include "CreateJournal.h"
 
 
 
@@ -138,7 +139,7 @@ void EditWindow::on_Save_clicked() {
     int16_t currentaccountId = ChartOfAccountWindow::selectedAccountId;
 
     // Connect to the database
-    QSqlDatabase db = MainWindow::ConnectDatabase();
+    QSqlDatabase db = MainWindow::db;
     if (!db.isOpen()) {
         qDebug() << "Database connection failed!";
         return;
@@ -171,7 +172,6 @@ void EditWindow::on_Save_clicked() {
 
     if (!query.exec()) {
         qDebug() << "Failed to update account details:" << query.lastError().text();
-        db.close();
         return;
     } else {
         qDebug() << "Account details updated successfully.";
@@ -179,7 +179,6 @@ void EditWindow::on_Save_clicked() {
 
     // Close the database connection
 
-    db.close();
     ChartOfAccountWindow* ChartWin = new ChartOfAccountWindow();
     QSize currentSize = this->size();
     QPoint currentPosition = this->pos();

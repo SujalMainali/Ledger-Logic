@@ -32,7 +32,7 @@ double ActivitySummary::fetchOpeningBalance(int accountId,QSqlDatabase &db) {
 }
 
 void ActivitySummary::loadLedgerData(int accountId) {
-    QSqlDatabase db = QSqlDatabase::database();
+    QSqlDatabase db = MainWindow::db;
     if (!db.isOpen()) {
         qDebug() << "Database is not open";
         return;
@@ -99,7 +99,6 @@ void ActivitySummary::loadLedgerData(int accountId) {
 
     // Display closing balance
     ui->ReadClosingBalance->setText(QString::number(runningBalance, 'f', 2));
-    db.close();
 
 }
 

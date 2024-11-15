@@ -20,18 +20,13 @@ void MainWindow::RetrieveDataForSalesGraph(QLineSeries *series) {
     QVector<QPointF> data;  // Vector to store (x, y) data
 
     QSqlDatabase db;
-    db=ConnectDatabase();
+    db=MainWindow::db;
     // Ensure the query is valid and can execute
     QSqlQuery query("SELECT transaction_date, total_amount FROM SalesTransactions");
     if (!query.exec()) {
-        qDebug() << "Error: failed to execute query";
-        db.close();
+        qDebug() << "Error: failed to execute Salesquery";
         return;
     }
-    else{
-        qDebug()<<"DatabaseConnectionOpened";
-    }
-
 
     // Process the query results
     while (query.next()) {  // Iterate through the query results
@@ -42,25 +37,19 @@ void MainWindow::RetrieveDataForSalesGraph(QLineSeries *series) {
         series->append(dateTime.date().day(), money);  // Append to the series directly
     }
 
-    // Close the SQLite connection after use
-    db.close();
-    qDebug()<<"DatabaseConnectionClosed";
 }
 
 void MainWindow::RetrieveDataForPurchaseGraph(QLineSeries *series) {
     QVector<QPointF> data;  // Vector to store (x, y) data
 
     QSqlDatabase db;
-    db=ConnectDatabase();
+    db=MainWindow::db;
     QSqlQuery query("SELECT transaction_date, total_amount FROM BillTransactions");
     if (!query.exec()) {
         qDebug() << "Error: failed to execute Purchase query";
-        db.close();
         return;
     }
-    else{
-        qDebug()<<"DatabaseConnectionOpened";
-    }
+
 
 
     // Process the query results
@@ -72,28 +61,38 @@ void MainWindow::RetrieveDataForPurchaseGraph(QLineSeries *series) {
         series->append(dateTime.date().day(), money);  // Append to the series directly
     }
 
-    // Close the SQLite connection after use
-    db.close();
-    qDebug()<<"DatabaseConnectionClosed";
 }
 
 
-QSqlDatabase MainWindow::ConnectDatabase(){
-    QString databasepath = QCoreApplication::applicationDirPath() + "/database/AccountingDetails.db";
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");  // SQLite database connection
-    db.setDatabaseName(databasepath);  // Set the database file path
+void MainWindow::ConnectDatabase() {
+    // Check if the database is already valid and open
+    if (db.isValid() && db.isOpen()) {
+        qDebug() << "Database connection is already open.";
+        return;
+    }
 
-        if (!db.open()) {  // False if the database doesn't open
-            qDebug() << "Error: unable to connect to database.";
-            qDebug() << "Database error:" << db.lastError().text();
-            return db;  // Exit if connection fails
+    // Initialize the connection only if it hasn't been initialized
+    if (!db.isValid()) {
+        const QString connectionName = "qt_sql_default_connection";
+        if (QSqlDatabase::contains(connectionName)) {
+            db = QSqlDatabase::database(connectionName);
+        } else {
+            db = QSqlDatabase::addDatabase("QSQLITE", connectionName);
+            db.setDatabaseName(QCoreApplication::applicationDirPath() + "/database/AccountingDetails.db");
         }
-        else{
-            qDebug()<<"Database Opened!";
-        }
+    }
 
-    return db;
+    // Attempt to open the database if it’s not open
+    if (!db.isOpen() && !db.open()) {
+        qDebug() << "Error: Unable to open database connection.";
+        qDebug() << "Database error:" << db.lastError().text();
+    } else {
+        qDebug() << "Database Opened!";
+    }
 }
+
+
+
 
 void MainWindow::OpenChartOfAccountsWindow(){
     ChartOfAccountWindow *ChartOfAccountWin=new ChartOfAccountWindow();
@@ -104,7 +103,6 @@ void MainWindow::OpenChartOfAccountsWindow(){
     ChartOfAccountWin->show();
 
     this->close();
-    delete this;
 }
 void MainWindow::on_Accounting_clicked()
 {
@@ -136,7 +134,6 @@ void MainWindow::on_CreateInvoice_clicked()
     CreateWin->move(currentPosition);
     CreateWin->show();
     this->close();
-    delete this;
 }
 
 
@@ -149,7 +146,6 @@ void MainWindow::on_RecordPayment_clicked()
     ReadWin->move(currentPosition);
     ReadWin->show();
     this->close();
-    delete this;
 }
 void MainWindow::on_Purchase_clicked()
 {
@@ -166,7 +162,6 @@ void MainWindow::on_CreateBill_clicked()
     CreateBillWin->move(currentPosition);
     CreateBillWin->show();
     this->close();
-    delete this;
 }
 
 
@@ -179,7 +174,6 @@ void MainWindow::on_RecordBillPayment_clicked()
     ReadSupplierWin->move(currentPosition);
     ReadSupplierWin->show();
     this->close();
-    delete this;
 }
 
 void MainWindow::on_pushButton_clicked()
@@ -191,7 +185,6 @@ void MainWindow::on_pushButton_clicked()
     JournalWin->move(currentPosition);
     JournalWin->show();
     this->close();
-    delete this;
 
 }
 void MainWindow::on_pushButton_2_clicked()
@@ -203,7 +196,6 @@ void MainWindow::on_pushButton_2_clicked()
     LedgerSummaryWin->move(currentPosition);
     LedgerSummaryWin->show();
     this->close();
-    delete this;
 }
 
 #endif // FUNCTIONSDEFINITION_H

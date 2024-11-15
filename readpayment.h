@@ -2,6 +2,7 @@
 #define READPAYMENT_H
 
 #include <QMainWindow>
+#include <QSqlDatabase>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

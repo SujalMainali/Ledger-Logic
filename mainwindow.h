@@ -21,9 +21,11 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    static QSqlDatabase db;
     void RetrieveDataForSalesGraph(QLineSeries *series);
     void RetrieveDataForPurchaseGraph(QLineSeries *series);
-    static QSqlDatabase ConnectDatabase();
+
+    static void ConnectDatabase();
 
     void OpenChartOfAccountsWindow();
 

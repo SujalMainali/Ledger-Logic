@@ -27,7 +27,6 @@ void InvoiceBillFunctions::loadDueBills(QTableWidget *Table, QSqlQuery &query, Q
     if (query.exec()) {
         int row = 0;
         while (query.next()) {
-            qDebug() << "Fetched row:" << query.value(0).toString(); // Debug output
 
             // Insert a new row in the table for each result
             Table->insertRow(row);
@@ -105,7 +104,7 @@ void InvoiceBillFunctions::populateComboBoxWithAccounts(QComboBox *comboBox,QSql
 }
 
 // Static method to save additional payments to the database
-void InvoiceBillFunctions::saveAdditionalPaymentsToDatabase(QTableWidget *Table, QSqlQuery &query,QSqlQuery &LoadQuery,QSqlDatabase &db)
+void InvoiceBillFunctions::saveAdditionalPaymentsToDatabase(QTableWidget *Table,QComboBox *BankAccount, QSqlQuery &query,QSqlQuery &LoadQuery,QSqlDatabase &db,bool isINvoice)
 {
     // Get the currently selected row
     int selectedRow = Table->currentRow();
@@ -137,6 +136,7 @@ void InvoiceBillFunctions::saveAdditionalPaymentsToDatabase(QTableWidget *Table,
             QMessageBox::critical(nullptr, "Database Error", "Failed to update the database: " + query.lastError().text());
         } else {
             QMessageBox::information(nullptr, "Success", "Additional payment has been updated successfully.");
+            InvoiceBillFunctions::createJournalEntryForPayment(BankAccount,billNumber,additionalPayment,db,isINvoice);
 
             // Refresh the table to reflect changes
             loadDueBills(Table, LoadQuery,db);
@@ -144,6 +144,102 @@ void InvoiceBillFunctions::saveAdditionalPaymentsToDatabase(QTableWidget *Table,
     }
 }
 
+void InvoiceBillFunctions::createJournalEntryForPayment( QComboBox *BankAccount,const QString &invoiceNumber, double paymentAmount,QSqlDatabase &db,bool isINvoice) {
+
+
+
+    QSqlQuery query(db);
+    if(isINvoice){
+        // Step 1: Fetch Customer Account ID and Customer Name from SalesTransactions
+        query.prepare("SELECT customer_name, customer_account FROM SalesTransactions WHERE invoice_number = :invoice_number");
+        query.bindValue(":invoice_number", invoiceNumber);
+    }
+    else{
+        query.prepare("SELECT supplier_name, supplier_account FROM BillTransactions WHERE bill_number = :invoice_number");
+        query.bindValue(":invoice_number", invoiceNumber);
+    }
+
+    QString customerName;
+    QString customerAccount;
+    if (query.exec() && query.next()) {
+        if(isINvoice){
+            customerName = query.value("customer_name").toString();
+            customerAccount = query.value("customer_account").toString();  // Assuming there's a customer_account column
+        }
+        else{
+            customerName = query.value("supplier_name").toString();
+            customerAccount = query.value("supplier_account").toString();  // Assuming there's a customer_account column
+        }
+
+    } else {
+        qDebug() << "Failed to fetch customer details for invoice:" << query.lastError().text();
+        return;
+    }
+
+    // Step 2: Fetch Bank Account ID from ComboBox
+    QString bankAccountName =BankAccount->currentText();
+    int bankAccountId = ChartOfAccountWindow::getAccountIdFromAccountName(bankAccountName);
+
+    if (bankAccountId == -1) {
+        qDebug() << "Invalid bank account selected!";
+        return;
+    }
+
+    // Step 3: Create a Journal Entry for the Payment
+    QString journalNumber = (isINvoice)?"PAYINV" + invoiceNumber.mid(4):"PAYBILL"+invoiceNumber.mid(4); // Extracting the integer part of the invoice number
+    QDate paymentDate = QDate::currentDate();
+    QString journalMemo = (isINvoice)?"Payment for Invoice " + invoiceNumber:"Payment for Invoice " + invoiceNumber;
+
+    // Insert Journal Entry into JournalEntries Table
+    query.prepare("INSERT INTO JournalEntries (journal_number, date, memo) "
+                  "VALUES (:journal_number, :date, :memo)");
+    query.bindValue(":journal_number", journalNumber);
+    query.bindValue(":date", paymentDate);
+    query.bindValue(":memo", journalMemo);
+
+    if (!query.exec()) {
+        qDebug() << "Failed to insert journal entry:" << query.lastError().text();
+        return;
+    }
+
+    int journalId = query.lastInsertId().toInt();
+
+    // Step 4: Debit Bank Account with Payment Amount
+    QSqlQuery lineQuery(db);
+    lineQuery.prepare("INSERT INTO JournalEntryLines (journal_id, account_id, amount, is_debit) "
+                      "VALUES (:journal_id, :account_id, :amount, :is_debit)");
+    lineQuery.bindValue(":journal_id", journalId);
+    lineQuery.bindValue(":account_id", bankAccountId);
+    lineQuery.bindValue(":amount", paymentAmount);
+    lineQuery.bindValue(":is_debit", isINvoice);  // Debit bank account (is_debit = true)
+
+    if (!lineQuery.exec()) {
+        qDebug() << "Failed to insert debit line for bank account:" << lineQuery.lastError().text();
+        return;
+    }
+
+    // Step 5: Credit Customer Account
+    // Assuming customerAccount is the account name for the customer
+    int customerAccountId = ChartOfAccountWindow::getAccountIdFromAccountName(customerAccount);
+    if (customerAccountId == -1) {
+        qDebug() << "Failed to get customer account ID for customer:" << customerName;
+        return;
+    }
+
+    QSqlQuery creditLineQuery(db);
+    creditLineQuery.prepare("INSERT INTO JournalEntryLines (journal_id, account_id, amount, is_debit) "
+                            "VALUES (:journal_id, :account_id, :amount, :is_debit)");
+    creditLineQuery.bindValue(":journal_id", journalId);
+    creditLineQuery.bindValue(":account_id", customerAccountId);
+    creditLineQuery.bindValue(":amount", paymentAmount);
+    creditLineQuery.bindValue(":is_debit", !isINvoice);  // Credit customer account (is_debit = false)
+
+    if (!creditLineQuery.exec()) {
+        qDebug() << "Failed to insert credit line for customer account:" << creditLineQuery.lastError().text();
+        return;
+    }
+
+}
 
 
 
@@ -155,7 +251,7 @@ void InvoiceBillFunctions::saveAdditionalPaymentsToDatabase(QTableWidget *Table,
 
 
 void InvoiceBillFunctions::TableDataEntry(QTableWidget* Table,int row, int column, QLineEdit* Total){
-    QSqlDatabase db= MainWindow::ConnectDatabase();
+    QSqlDatabase db= MainWindow::db;
     int totalColumns = Table->columnCount();
 
     // Check if the change is in the last row
@@ -191,7 +287,6 @@ void InvoiceBillFunctions::TableDataEntry(QTableWidget* Table,int row, int colum
 
         }
     }
-    db.close();
 }
 void InvoiceBillFunctions::updateAmountInTable(QTableWidget *Table, int row){
     if (row < 0 || row >= Table->rowCount()) {

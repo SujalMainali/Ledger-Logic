@@ -13,12 +13,10 @@ ChartOfAccountWindow::ChartOfAccountWindow(QWidget *parent)
 {
     ui->setupUi(this);
     qDebug()<<"CHartOfAccouuntOpened";
-    db=MainWindow::ConnectDatabase(); //Connecting to the database and storing the location at db
-    qDebug()<<"CHartOfAccouuntDataBaseConnected";
+    db=MainWindow::db; //Connecting to the database and storing the location at db
     ui->DeleteAccountFrame->setVisible(false);
     this->displayData();
 
-    db.close();
 }
 
 void ChartOfAccountWindow::displayData()
@@ -135,7 +133,7 @@ void ChartOfAccountWindow::on_CreateAccount_clicked()
 
 void ChartOfAccountWindow::on_ChartOfAccount_itemDoubleClicked(QTreeWidgetItem *item, int column)
 {
-        db=MainWindow::ConnectDatabase();
+        db=MainWindow::db;
         ui->DeleteAccountFrame->setVisible(true);
         ChartOfAccountWindow::selectedAccountId = item->text(0).toInt();
         QString accountName = item->text(1); // Assuming the second column has the account name
@@ -153,7 +151,6 @@ void ChartOfAccountWindow::on_ChartOfAccount_itemDoubleClicked(QTreeWidgetItem *
         }
 
         ui->DeleteLabel->setText("SELECT ACTION FOR: " + accountName + "?");
-        db.close();
 }
 
 
@@ -165,7 +162,7 @@ void ChartOfAccountWindow::on_Cancel_clicked()
 
 void ChartOfAccountWindow::on_Delete_clicked()
 {
-    db=MainWindow::ConnectDatabase();
+    db=MainWindow::db;
     if (ChartOfAccountWindow::selectedAccountId <= 0) {
             qDebug() << "No account selected for deletion!";
             return;
@@ -197,14 +194,13 @@ void ChartOfAccountWindow::on_Delete_clicked()
 
         // Refresh the QTreeWidget to reflect the deletion
         this->displayData();
-        db.close();
 }
 
 
 void ChartOfAccountWindow::on_EditAccount_clicked()
 {
     EditWindow * EditWin=new EditWindow();
-    db=MainWindow::ConnectDatabase();
+    db=MainWindow::db;
 
     //EditWin->setStyleSheet("background-color:black; color: white;");
 
@@ -222,13 +218,12 @@ void ChartOfAccountWindow::on_EditAccount_clicked()
     EditWin->show();
     this->close();
     delete this;
-    db.close();
 
 }
 
 int ChartOfAccountWindow::getAccountIdFromAccountName(const QString &accountName) {
     int accountId = -1; // Default to -1 if not found
-    QSqlDatabase db = MainWindow::ConnectDatabase();
+    QSqlDatabase db = MainWindow::db;
     if (!db.isOpen()) {
         qDebug() << "Failed to open the database for account retrieval!";
         return accountId;
@@ -244,7 +239,6 @@ int ChartOfAccountWindow::getAccountIdFromAccountName(const QString &accountName
         qDebug() << "Failed to retrieve account ID:" << query.lastError().text();
     }
 
-    db.close();
     return accountId;
 }
 

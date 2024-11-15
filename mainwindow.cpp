@@ -9,12 +9,14 @@
 #include <QtSql/QSqlError>
 #include "FunctionsDefinition.h"
 
+QSqlDatabase MainWindow::db = QSqlDatabase();
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    MainWindow::ConnectDatabase();
 
     QChart *SalesChart= new QChart(); //this creates an object of Qchart class
     QLineSeries *SalesSeries=new QLineSeries(this);//This creates an object series of Qlineseries class in Global

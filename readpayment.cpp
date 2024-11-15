@@ -9,12 +9,13 @@ ReadPayment::ReadPayment(QWidget *parent)
     , ui(new Ui::ReadPayment)
 {
     ui->setupUi(this);
-    QSqlDatabase db=MainWindow::ConnectDatabase();
+    QSqlDatabase db=MainWindow::db;
     QSqlQuery loadQuery(db);
     loadQuery.prepare("SELECT invoice_number, customer_name, due_date, remaining_amount FROM SalesTransactions WHERE remaining_amount > 0");
     InvoiceBillFunctions::loadDueBills(ui->InvoiceTable,loadQuery,db);
+    InvoiceBillFunctions::populateComboBoxWithAccounts(ui->ReadBankAccount,db);
     ui->ButtonFrame->setVisible(false);
-    db.close();
+
 }
 
 ReadPayment::~ReadPayment()
@@ -65,7 +66,7 @@ void ReadPayment::on_InvoiceTable_cellDoubleClicked(int row, int column)
 void ReadPayment::on_Save_clicked()
 {
     QSqlDatabase db;
-        db = MainWindow::ConnectDatabase();
+        db = MainWindow::db;
         QSqlQuery query, Loadquery;
 
         // Load query to fetch the sales transactions where payments are due
@@ -74,9 +75,9 @@ void ReadPayment::on_Save_clicked()
         // Update query to record additional payments made against an invoice
         query.prepare("UPDATE SalesTransactions SET received_amount = received_amount + :additionalPayment, remaining_amount = remaining_amount - :additionalPayment WHERE invoice_number = :billNumber");
 
-        InvoiceBillFunctions::saveAdditionalPaymentsToDatabase(ui->InvoiceTable, query, Loadquery,db);
+        InvoiceBillFunctions::saveAdditionalPaymentsToDatabase(ui->InvoiceTable,ui->ReadBankAccount, query, Loadquery,db,true);
 
-        db.close();
+
 }
 
 

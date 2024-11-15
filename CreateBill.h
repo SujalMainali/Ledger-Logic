@@ -18,6 +18,7 @@ public:
     CreateBill(QWidget *parent = nullptr);
     void saveBillTransactionItems();
     void saveBillTransaction();
+    void createJournalEntryForBill();
     ~CreateBill();
 
 private slots:

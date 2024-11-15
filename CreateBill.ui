@@ -430,13 +430,16 @@ font: 900 9pt &quot;Segoe UI Black&quot;;</string>
             </property>
             <property name="dateTime">
              <datetime>
-              <hour>13</hour>
-              <minute>30</minute>
+              <hour>7</hour>
+              <minute>45</minute>
               <second>0</second>
               <year>2023</year>
               <month>12</month>
               <day>30</day>
              </datetime>
+            </property>
+            <property name="calendarPopup">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -492,13 +495,16 @@ font: 900 9pt &quot;Segoe UI Black&quot;;</string>
             </property>
             <property name="dateTime">
              <datetime>
-              <hour>13</hour>
-              <minute>30</minute>
+              <hour>7</hour>
+              <minute>45</minute>
               <second>0</second>
               <year>2023</year>
               <month>12</month>
               <day>30</day>
              </datetime>
+            </property>
+            <property name="calendarPopup">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -514,6 +520,9 @@ font: 900 9pt &quot;Segoe UI Black&quot;;</string>
              <string notr="true">background-color:grey;
 color:white;
 font: 900 9pt &quot;Segoe UI Black&quot;;</string>
+            </property>
+            <property name="placeholderText">
+             <string comment="BIL000" extracomment="BIL000">BIL000</string>
             </property>
            </widget>
           </item>

@@ -11,7 +11,8 @@ public:
     static void loadDueBills(QTableWidget *Table, QSqlQuery &query, QSqlDatabase &db);
     static void setComboBoxInCell(QTableWidget *Table, int row, int column, QSqlDatabase &db);
     static void populateComboBoxWithAccounts(QComboBox *comboBox,QSqlDatabase &db);
-    static void saveAdditionalPaymentsToDatabase(QTableWidget *billsTable, QSqlQuery &query,QSqlQuery &LoadQuery,QSqlDatabase &db);
+    static void saveAdditionalPaymentsToDatabase(QTableWidget *billsTable,QComboBox *BankAccount ,QSqlQuery &query,QSqlQuery &LoadQuery,QSqlDatabase &db,bool isINvoice);
+    static void createJournalEntryForPayment(QComboBox *BankAccount,const QString &invoiceNumber, double paymentAmount,QSqlDatabase &db,bool isINvoice);
     static void TableDataEntry(QTableWidget* Table,int row, int column, QLineEdit* Total);
     static void updateAmountInTable(QTableWidget *Table, int row);
     static void showTotalAmount(QTableWidget *Table,QLineEdit *Total);

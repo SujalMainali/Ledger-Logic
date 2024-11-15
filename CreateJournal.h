@@ -16,7 +16,7 @@ class CreateJournal : public QMainWindow
 
 public:
     CreateJournal(QWidget *parent = nullptr);
-    void UpdateAccountBalances(int accountId, double amount, bool isDebit, QSqlDatabase &db);
+    static void UpdateAccountBalances(int accountId, double amount, bool isDebit, QSqlDatabase &db);
     ~CreateJournal();
 
 private slots:

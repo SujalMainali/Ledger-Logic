@@ -15,7 +15,7 @@ ReadSupplierPayment::ReadSupplierPayment(QWidget *parent)
     , ui(new Ui::ReadSupplierPayment)
 {
     ui->setupUi(this);
-    QSqlDatabase db = MainWindow::ConnectDatabase();
+    QSqlDatabase db = MainWindow::db;
     if (db.isOpen()) {
         qDebug() << "Database Opened";
         QSqlQuery Loadquery(db);  // Ensure the query is associated with the correct DB connection
@@ -26,9 +26,9 @@ ReadSupplierPayment::ReadSupplierPayment(QWidget *parent)
     } else {
         QMessageBox::critical(this, "Database Error", "Failed to open database connection.");
     }
-
+    InvoiceBillFunctions::populateComboBoxWithAccounts(ui->BankAccount,db);
     ui->ButtonsFrame->setVisible(false);
-    db.close();
+
 }
 
 ReadSupplierPayment::~ReadSupplierPayment()
@@ -68,13 +68,13 @@ void ReadSupplierPayment::on_BillsTable_cellDoubleClicked(int row, int column)
 void ReadSupplierPayment::on_Save_clicked()
 {
     QSqlDatabase db;
-    db=MainWindow::ConnectDatabase();
+    db=MainWindow::db;
     QSqlQuery query,Loadquery;
     Loadquery.prepare("SELECT bill_number, supplier_name, due_date, remaining_amount FROM BillTransactions WHERE remaining_amount > 0");
 
     query.prepare("UPDATE BillTransactions SET paid_amount = paid_amount + :additionalPayment, remaining_amount = remaining_amount - :additionalPayment WHERE bill_number = :billNumber");
-    InvoiceBillFunctions::saveAdditionalPaymentsToDatabase(ui->BillsTable,query,Loadquery,db);
-    db.close();
+    InvoiceBillFunctions::saveAdditionalPaymentsToDatabase(ui->BillsTable,ui->BankAccount,query,Loadquery,db,false);
+
 }
 
 void ReadSupplierPayment::on_Cancel_clicked()

@@ -3,6 +3,7 @@
 #include "mainwindow.h"
 #include "chartofaccountwindow.h"
 #include "invoicebillfunctions.h"
+#include "CreateJournal.h"
 #include <QSql>
 #include <QDebug>
 
@@ -11,7 +12,7 @@ CreateInvoice::CreateInvoice(QWidget *parent)
     , ui(new Ui::CreateInvoice)
 {
     ui->setupUi(this);
-    QSqlDatabase db=MainWindow::ConnectDatabase();
+    QSqlDatabase db=MainWindow::db;
     InvoiceBillFunctions::populateComboBoxWithAccounts(ui->ShowAccounts,db);
     InvoiceBillFunctions::setComboBoxInCell(ui->ItemsTable,0, 2,db);
 }
@@ -35,7 +36,7 @@ void CreateInvoice::saveTransactionItems() {
         return;
     }
 
-    QSqlDatabase db = MainWindow::ConnectDatabase();
+    QSqlDatabase db =MainWindow::db;
     if (!db.isOpen()) {
         qDebug() << "Failed to open the database!";
         return;
@@ -47,7 +48,7 @@ void CreateInvoice::saveTransactionItems() {
 
     // Loop through each row in the table to read the product details
     int rowCount = ui->ItemsTable->rowCount();
-    for (int row = 0; row < rowCount; ++row) {
+    for (int row = 0; row < rowCount-1; ++row) {
         // Read product details from the QTableWidget/QTableView
         QString productName = ui->ItemsTable->item(row, 0) ? ui->ItemsTable->item(row, 0)->text() : QString();
         double rate = ui->ItemsTable->item(row, 3) ? ui->ItemsTable->item(row, 3)->text().toDouble() : 0.0;
@@ -79,7 +80,6 @@ void CreateInvoice::saveTransactionItems() {
             qDebug() << "Inserted row for product:" << productName;
         }
     }
-    db.close();
 }
 
 
@@ -104,7 +104,7 @@ void CreateInvoice::saveSalesTransaction() {
     int accountId = ChartOfAccountWindow::getAccountIdFromAccountName(customerAccount); // Define this method to fetch the account ID
 
     // Connect to the database
-    QSqlDatabase db = MainWindow::ConnectDatabase();
+    QSqlDatabase db =MainWindow::db;
     if (!db.isOpen()) {
         qDebug() << "Failed to open the database!";
         return;
@@ -149,10 +149,121 @@ void CreateInvoice::saveSalesTransaction() {
         }
     }
 
-    // Close the database connection
-    db.close();
 }
 
+
+
+void CreateInvoice::createJournalEntryForInvoice() {
+
+    QString invoiceNumber = ui->ReadInvoiceNo->text();
+    QString customerAccountName = ui->ShowAccounts->currentText();
+    int customerAccountId = ChartOfAccountWindow::getAccountIdFromAccountName(customerAccountName);
+
+    QSqlDatabase db = MainWindow::db;
+    if (!db.isOpen()) {
+        qDebug() << "Failed to open the database!";
+        return;
+    }
+
+    QSqlQuery query(db);
+
+    // Step 1: Fetch Invoice Date and Total Amount
+    query.prepare("SELECT issue_date, total_amount FROM SalesTransactions WHERE invoice_number = :invoice_number");
+    query.bindValue(":invoice_number", invoiceNumber);
+
+    QDate invoiceDate;
+    double totalAmount = 0.0;
+    if (query.exec() && query.next()) {
+        invoiceDate = query.value("issue_date").toDate();
+        totalAmount = query.value("total_amount").toDouble();
+    } else {
+        qDebug() << "Failed to fetch invoice details:" << query.lastError().text();
+        return;
+    }
+
+    // Step 2: Extract integer part from Invoice Number to form Journal Number
+    QString invoiceNumberIntPart = invoiceNumber;
+    invoiceNumberIntPart.remove(0, 3);  // Remove 'INV' prefix to get the integer part
+    QString journalNumber = "INVGJ" + invoiceNumberIntPart;
+
+    // Step 3: Create a new Journal Entry in JournalEntries
+    QString journalMemo = "Invoice " + invoiceNumber + " Posting";
+
+    query.prepare("INSERT INTO JournalEntries (journal_number, date, memo) "
+                  "VALUES (:journal_number, :date, :memo)");
+    query.bindValue(":journal_number", journalNumber);
+    query.bindValue(":date", invoiceDate);
+    query.bindValue(":memo", journalMemo);
+
+
+
+    if (!query.exec()) {
+        qDebug() << "Failed to insert journal entry:" << query.lastError().text();
+        return;
+    }
+
+    int journalId = query.lastInsertId().toInt();
+
+    // Step 4: Debit Customer Account with Total Amount
+    QSqlQuery lineQuery(db);
+    lineQuery.prepare("INSERT INTO JournalEntryLines (journal_id, account_id, amount, is_debit) "
+                      "VALUES (:journal_id, :account_id, :amount, :is_debit)");
+    lineQuery.bindValue(":journal_id", journalId);
+    lineQuery.bindValue(":account_id", customerAccountId);
+    lineQuery.bindValue(":amount", totalAmount);
+    lineQuery.bindValue(":is_debit", true);  // Debit customer account
+
+    if (!lineQuery.exec()) {
+        qDebug() << "Failed to insert debit line for customer:" << lineQuery.lastError().text();
+        return;
+    }
+
+    CreateJournal::UpdateAccountBalances(customerAccountId,totalAmount,true,db);
+
+    // Step 5: Credit Sales Accounts based on UI Table Data
+    int rowCount = ui->ItemsTable->rowCount();
+
+
+    for (int row = 0; row < rowCount-1; ++row) {
+        // Get the amount from the UI table
+        double amount = ui->ItemsTable->item(row, 5) ? ui->ItemsTable->item(row, 5)->text().toDouble() : 0.0;
+
+        // Retrieve the QComboBox from the table cell for the account name
+        QComboBox *comboBox = qobject_cast<QComboBox*>(ui->ItemsTable->cellWidget(row, 2)); // Assuming account name is in column 2
+        QString accountName;
+        if (comboBox) {
+            accountName = comboBox->currentText();
+        } else {
+            qDebug() << "No combo box found at row" << row << "column 2";
+            continue; // Skip this iteration if no combo box is found
+        }
+
+        // Get the account ID for the selected account
+        int salesAccountId = ChartOfAccountWindow::getAccountIdFromAccountName(accountName);
+        if (salesAccountId == -1) {
+            qDebug() << "Failed to find account ID for account name:" << accountName;
+            continue;
+        }
+
+        // Directly construct the SQL query string with the values
+        qDebug()<<"Connection:"<<db.connectionName()<<"Driver:"<<db.driverName();
+        QSqlQuery creditLineQuery;
+        QString queryString = QString("INSERT INTO JournalEntryLines (journal_id, account_id, amount, is_debit) "
+                                      "VALUES (%1, %2, %3, %4)")
+                                      .arg(journalId)
+                                      .arg(salesAccountId)
+                                      .arg(amount)
+                                      .arg(false); // `false` is 0 in SQL
+
+        if (!creditLineQuery.exec(queryString)) {
+            qDebug() << "Failed to insert credit line for sales item:"
+                     << accountName << "with error:" << creditLineQuery.lastError().text();
+        }
+        CreateJournal::UpdateAccountBalances(salesAccountId,amount,false,db);
+    }
+
+
+}
 
 
 void CreateInvoice::on_CancelButton_clicked()
@@ -174,6 +285,7 @@ void CreateInvoice::on_SaveButton_clicked()
 {
     saveSalesTransaction();
     saveTransactionItems();
+    createJournalEntryForInvoice();
     MainWindow *MainWin=new MainWindow();
     QSize currentSize = this->size();
     QPoint currentPosition = this->pos();

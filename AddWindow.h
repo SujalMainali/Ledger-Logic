@@ -18,6 +18,7 @@ public:
     ~AddWindow();
     void AddChildToDatabase();
     void AddParentToDatabase();
+    void AddAccountToBalanceTable(int accountId, double openingBalance);
     void PopulateSelectHeader();
     int16_t GetTypeIdFromType(QString type);
 

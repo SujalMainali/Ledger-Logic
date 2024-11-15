@@ -30,7 +30,7 @@ AddWindow::~AddWindow()
 
 void AddWindow:: AddChildToDatabase(){
     QSqlDatabase db;
-    db=MainWindow::ConnectDatabase();
+    db=MainWindow::db;
 
     QString accountName = ui->ReadName->text();
     QString accountCode = ui->ReadCode->text();
@@ -65,9 +65,10 @@ void AddWindow:: AddChildToDatabase(){
         qDebug() << "Item saved successfully!";
     }
 
+    AddAccountToBalanceTable(accountCode.toInt(),balance.toDouble());
+
     delete typeID;
 
-    db.close();
 
     ui->ReadName->clear();
     ui->ReadCode->clear();
@@ -79,7 +80,7 @@ void AddWindow:: AddChildToDatabase(){
 
 void AddWindow::AddParentToDatabase() {
     QSqlDatabase db;
-    db = MainWindow::ConnectDatabase();
+    db = MainWindow::db;
 
     // Get input values from the UI
     QString parentName = ui->ReadName->text();
@@ -108,8 +109,9 @@ void AddWindow::AddParentToDatabase() {
         qDebug() << "Parent account saved successfully!";
     }
 
+
     // Close the database connection
-    db.close();
+
     delete typeID;
     // Clear the input fields in the UI
     ui->ReadName->clear();
@@ -117,13 +119,42 @@ void AddWindow::AddParentToDatabase() {
     ui->ReadType->setCurrentIndex(0);
 }
 
+void AddWindow::AddAccountToBalanceTable(int accountId, double openingBalance) {
+    // Open the database connection
+    QSqlDatabase db = MainWindow::db;
+
+    // Calculate the initial current balance (opening balance)
+    double currentBalance = openingBalance;
+
+    // Prepare the SQL query to insert a new record in AccountBalances table
+    QSqlQuery query;
+    query.prepare("INSERT INTO AccountBalances (account_id, opening_balance, debit_total, credit_total, current_balance) "
+                  "VALUES (:account_id, :opening_balance, :debit_total, :credit_total, :current_balance)");
+
+    // Bind values to the query
+    query.bindValue(":account_id", accountId);
+    query.bindValue(":opening_balance", openingBalance);
+    query.bindValue(":debit_total", 0.0);  // Initial debit total
+    query.bindValue(":credit_total", 0.0); // Initial credit total
+    query.bindValue(":current_balance", currentBalance); // Initial current balance
+
+    // Execute the query and check for errors
+    if (!query.exec()) {
+        qDebug() << "Error adding account to AccountBalances:" << query.lastError().text();
+    } else {
+        qDebug() << "Account added to AccountBalances successfully!";
+    }
+
+}
+
+
 
 
 void AddWindow::PopulateSelectHeader(){
     ui->ReadHeader->clear();
         QSqlDatabase db;
 
-        db=MainWindow::ConnectDatabase();
+        db=MainWindow::db;
        // Prepare and execute the query to fetch parent headers
        QSqlQuery query;
        query.prepare("SELECT parent_name FROM ParentAccounts");
@@ -138,7 +169,6 @@ void AddWindow::PopulateSelectHeader(){
            QString parentName = query.value("parent_name").toString();
            ui->ReadHeader->addItem(parentName);
        }
-       db.close();
 }
 
 

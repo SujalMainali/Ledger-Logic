@@ -22,6 +22,7 @@ private slots:
     void on_ItemsTable_cellChanged(int row, int column);
     void saveTransactionItems();
     void saveSalesTransaction();
+    void createJournalEntryForInvoice();
 //    static bool reload;
 
 

@@ -25,7 +25,7 @@ LedgerSummary::~LedgerSummary()
 
 void LedgerSummary::loadLedgerData(QDate startDate, QDate endDate) {
     // Prepare SQL query to fetch account balances and journal totals for the selected period
-    QSqlDatabase db=MainWindow::ConnectDatabase();
+    QSqlDatabase db=MainWindow::db;
     QSqlQuery query(db);
 
 
@@ -91,7 +91,6 @@ void LedgerSummary::loadLedgerData(QDate startDate, QDate endDate) {
 
         row++;
     }
-    db.close();
 }
 
 

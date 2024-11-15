@@ -9,10 +9,10 @@ CreateJournal::CreateJournal(QWidget *parent)
     , ui(new Ui::CreateJournal)
 {
     ui->setupUi(this);
-    QSqlDatabase db= MainWindow::ConnectDatabase();
+    QSqlDatabase db= MainWindow::db;
     InvoiceBillFunctions::setComboBoxInCell(ui->JournalTable,0,0,db);
     InvoiceBillFunctions::setComboBoxInCell(ui->JournalTable,1,0,db);
-    db.close();
+
     ui->AddRow->setVisible(false);
 }
 
@@ -78,7 +78,7 @@ void CreateJournal::on_Save_clicked()
     }
 
     // Connect to the database
-    QSqlDatabase db = MainWindow::ConnectDatabase();
+    QSqlDatabase db = MainWindow::db;
     if (!db.isOpen()) {
         qDebug() << "Error: Could not open the database.";
         return;
@@ -149,10 +149,10 @@ void CreateJournal::on_Save_clicked()
             qDebug() << "Error inserting journal entry line:" << lineQuery.lastError().text();
         }
 
-        UpdateAccountBalances(accountId, amount, isDebit, db);
+        CreateJournal::UpdateAccountBalances(accountId, amount, isDebit, db);
     }
 
-    db.close();
+
     qDebug() << "Journal entry and lines saved successfully!";
 }
 
@@ -180,8 +180,8 @@ void CreateJournal::on_AddRow_clicked()
     ui->JournalTable->insertRow(rowCount);
     ui->JournalTable->setItem(rowCount,1,debitItem);
     ui->JournalTable->setItem(rowCount, 2, creditItem);
-    QSqlDatabase db= MainWindow::ConnectDatabase();
+    QSqlDatabase db= MainWindow::db;
     InvoiceBillFunctions::setComboBoxInCell(ui->JournalTable,rowCount,0,db);
-    db.close();
+
  }
 
