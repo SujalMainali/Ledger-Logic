@@ -12,6 +12,7 @@
 #include "ReadSupplierPayment.h"
 #include "CreateJournal.h"
 #include "ledgersummary.h"
+#include "trialbalance.h"
 
 
 
@@ -113,15 +114,16 @@ void MainWindow::on_Accounting_clicked()
 void MainWindow::on_NavButton_clicked()
 {
     ui->Navbar->setVisible(!ui->Navbar->isVisible());
-        ui->SalesOptions->setVisible(false);
-        ui->BillOptions->setVisible(false);
+    ui->InvoiceOptionsFrame ->setVisible(false);
+    ui->BillOptionsFrame->setVisible(false);
+    ui->ReportingOptionsFrame->setVisible(false);
 }
 
 
 
 void MainWindow::on_Sales_clicked()
 {
-    ui->SalesOptions->setVisible(true);
+    ui->InvoiceOptionsFrame->setVisible(true);
 }
 
 
@@ -149,7 +151,7 @@ void MainWindow::on_RecordPayment_clicked()
 }
 void MainWindow::on_Purchase_clicked()
 {
-    ui->BillOptions->setVisible(true);
+    ui->BillOptionsFrame->setVisible(true);
 }
 
 
@@ -195,6 +197,17 @@ void MainWindow::on_pushButton_2_clicked()
     LedgerSummaryWin->resize(currentSize);
     LedgerSummaryWin->move(currentPosition);
     LedgerSummaryWin->show();
+    this->close();
+}
+
+void MainWindow::on_TrialBalance_clicked()
+{
+    TrialBalance *TrialBalanceWin=new TrialBalance();
+    QSize currentSize = this->size();
+    QPoint currentPosition = this->pos();
+    TrialBalanceWin->resize(currentSize);
+    TrialBalanceWin->move(currentPosition);
+    TrialBalanceWin->show();
     this->close();
 }
 

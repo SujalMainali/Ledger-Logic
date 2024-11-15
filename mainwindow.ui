@@ -177,7 +177,7 @@ color:white;
             </property>
             <property name="minimumSize">
              <size>
-              <width>200</width>
+              <width>375</width>
               <height>0</height>
              </size>
             </property>
@@ -191,9 +191,13 @@ color:white;
              <enum>Qt::LeftToRight</enum>
             </property>
             <property name="styleSheet">
-             <string notr="true">margin:15px;
+             <string notr="true">
 color:black;
-
+QPushButton{
+	background-color:rgb(191, 226, 228);;
+	color:black;
+	border-radius:7px;
+}
 
 </string>
             </property>
@@ -214,49 +218,468 @@ color:black;
               <number>75</number>
              </property>
              <item>
-              <widget class="QPushButton" name="Purchase">
+              <widget class="QFrame" name="BillOptions">
                <property name="minimumSize">
                 <size>
-                 <width>0</width>
+                 <width>150</width>
                  <height>60</height>
                 </size>
                </property>
-               <property name="cursor">
-                <cursorShape>PointingHandCursor</cursorShape>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>90</height>
+                </size>
                </property>
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">color:black</string>
                </property>
-               <property name="text">
-                <string>Purchases</string>
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
                </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_2">
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item alignment="Qt::AlignLeft">
+                 <widget class="QPushButton" name="Purchase">
+                  <property name="minimumSize">
+                   <size>
+                    <width>200</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>200</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                  <property name="cursor">
+                   <cursorShape>PointingHandCursor</cursorShape>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true"/>
+                  </property>
+                  <property name="text">
+                   <string>Purchases</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QFrame" name="BillOptionsFrame">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>70</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true"/>
+                  </property>
+                  <property name="frameShape">
+                   <enum>QFrame::StyledPanel</enum>
+                  </property>
+                  <property name="frameShadow">
+                   <enum>QFrame::Raised</enum>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_3">
+                   <property name="spacing">
+                    <number>0</number>
+                   </property>
+                   <property name="leftMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>0</number>
+                   </property>
+                   <item>
+                    <widget class="QPushButton" name="RecordBillPayment">
+                     <property name="minimumSize">
+                      <size>
+                       <width>150</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>150</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>RecordBillPayment</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="CreateBill">
+                     <property name="minimumSize">
+                      <size>
+                       <width>150</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>150</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>CreateBill</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+               </layout>
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="Sales">
+              <widget class="QFrame" name="SalesOptions">
                <property name="minimumSize">
                 <size>
-                 <width>0</width>
+                 <width>300</width>
+                 <height>70</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>400</width>
                  <height>60</height>
                 </size>
                </property>
-               <property name="cursor">
-                <cursorShape>PointingHandCursor</cursorShape>
+               <property name="styleSheet">
+                <string notr="true">color:black</string>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout">
+                <property name="spacing">
+                 <number>6</number>
+                </property>
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item alignment="Qt::AlignLeft|Qt::AlignVCenter">
+                 <widget class="QPushButton" name="Sales">
+                  <property name="minimumSize">
+                   <size>
+                    <width>200</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>200</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="cursor">
+                   <cursorShape>PointingHandCursor</cursorShape>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true"/>
+                  </property>
+                  <property name="text">
+                   <string>Sales</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QFrame" name="InvoiceOptionsFrame">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>70</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>60</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true"/>
+                  </property>
+                  <property name="frameShape">
+                   <enum>QFrame::StyledPanel</enum>
+                  </property>
+                  <property name="frameShadow">
+                   <enum>QFrame::Raised</enum>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_2">
+                   <property name="spacing">
+                    <number>0</number>
+                   </property>
+                   <property name="leftMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>0</number>
+                   </property>
+                   <item>
+                    <widget class="QPushButton" name="CreateInvoice">
+                     <property name="minimumSize">
+                      <size>
+                       <width>150</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>150</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>CreateInvoice</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="RecordPayment">
+                     <property name="minimumSize">
+                      <size>
+                       <width>150</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>150</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>RecordPayment</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QFrame" name="ReportingOptions">
+               <property name="minimumSize">
+                <size>
+                 <width>300</width>
+                 <height>100</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>400</width>
+                 <height>90</height>
+                </size>
                </property>
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">color:black</string>
                </property>
-               <property name="text">
-                <string>Sales</string>
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
                </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_4">
+                <property name="spacing">
+                 <number>6</number>
+                </property>
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item alignment="Qt::AlignLeft">
+                 <widget class="QPushButton" name="Reporting">
+                  <property name="minimumSize">
+                   <size>
+                    <width>200</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>200</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="cursor">
+                   <cursorShape>PointingHandCursor</cursorShape>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true"/>
+                  </property>
+                  <property name="text">
+                   <string>Reporting</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QFrame" name="ReportingOptionsFrame">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>100</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>100</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true"/>
+                  </property>
+                  <property name="frameShape">
+                   <enum>QFrame::StyledPanel</enum>
+                  </property>
+                  <property name="frameShadow">
+                   <enum>QFrame::Raised</enum>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_5">
+                   <property name="spacing">
+                    <number>0</number>
+                   </property>
+                   <property name="leftMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>0</number>
+                   </property>
+                   <item>
+                    <widget class="QPushButton" name="TrialBalance">
+                     <property name="minimumSize">
+                      <size>
+                       <width>150</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>150</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>Trial Balance</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="PLReport">
+                     <property name="minimumSize">
+                      <size>
+                       <width>150</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>150</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>PL Report</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="BalanceSheet">
+                     <property name="minimumSize">
+                      <size>
+                       <width>150</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>150</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>BalanceSheet</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+               </layout>
               </widget>
              </item>
              <item>
               <widget class="QPushButton" name="Accounting">
                <property name="minimumSize">
                 <size>
-                 <width>0</width>
-                 <height>60</height>
+                 <width>200</width>
+                 <height>40</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>200</width>
+                 <height>16777215</height>
                 </size>
                </property>
                <property name="cursor">
@@ -271,30 +694,17 @@ color:black;
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="Reporting">
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>60</height>
-                </size>
-               </property>
-               <property name="cursor">
-                <cursorShape>PointingHandCursor</cursorShape>
-               </property>
-               <property name="styleSheet">
-                <string notr="true"/>
-               </property>
-               <property name="text">
-                <string>Reporting</string>
-               </property>
-              </widget>
-             </item>
-             <item>
               <widget class="QPushButton" name="pushButton">
                <property name="minimumSize">
                 <size>
-                 <width>0</width>
-                 <height>60</height>
+                 <width>200</width>
+                 <height>40</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>200</width>
+                 <height>16777215</height>
                 </size>
                </property>
                <property name="text">
@@ -306,8 +716,14 @@ color:black;
               <widget class="QPushButton" name="pushButton_2">
                <property name="minimumSize">
                 <size>
-                 <width>0</width>
-                 <height>60</height>
+                 <width>200</width>
+                 <height>40</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>200</width>
+                 <height>16777215</height>
                 </size>
                </property>
                <property name="text">
@@ -369,7 +785,7 @@ color:black;
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>1309</width>
+               <width>1134</width>
                <height>524</height>
               </rect>
              </property>
@@ -379,287 +795,8 @@ color:black;
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
-             <layout class="QGridLayout" name="gridLayout">
-              <item row="2" column="0" alignment="Qt::AlignLeft|Qt::AlignTop">
-               <widget class="QFrame" name="SalesOptions">
-                <property name="minimumSize">
-                 <size>
-                  <width>150</width>
-                  <height>100</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>16777215</width>
-                  <height>80</height>
-                 </size>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">color:black</string>
-                </property>
-                <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
-                <layout class="QVBoxLayout" name="verticalLayout_2">
-                 <item>
-                  <widget class="QPushButton" name="CreateInvoice">
-                   <property name="minimumSize">
-                    <size>
-                     <width>150</width>
-                     <height>30</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>150</width>
-                     <height>16777215</height>
-                    </size>
-                   </property>
-                   <property name="text">
-                    <string>CreateInvoice</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="RecordPayment">
-                   <property name="minimumSize">
-                    <size>
-                     <width>150</width>
-                     <height>30</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>150</width>
-                     <height>30</height>
-                    </size>
-                   </property>
-                   <property name="text">
-                    <string>RecordPayment</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-              <item row="3" column="0" alignment="Qt::AlignLeft|Qt::AlignVCenter">
-               <widget class="QFrame" name="frame_3">
-                <property name="maximumSize">
-                 <size>
-                  <width>2000</width>
-                  <height>100</height>
-                 </size>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true"/>
-                </property>
-                <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
-                <layout class="QGridLayout" name="gridLayout_5">
-                 <item row="0" column="0">
-                  <widget class="QLineEdit" name="ContextOfGraph">
-                   <property name="minimumSize">
-                    <size>
-                     <width>600</width>
-                     <height>40</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>600</width>
-                     <height>40</height>
-                    </size>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <family>Sitka Heading</family>
-                     <pointsize>12</pointsize>
-                     <italic>true</italic>
-                     <bold>true</bold>
-                    </font>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">padding-left:15px;
-
-font: 700 italic 12pt &quot;Sitka Heading&quot;;</string>
-                   </property>
-                   <property name="text">
-                    <string>Here are some graphs that we have prepared for you:</string>
-                   </property>
-                   <property name="readOnly">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QFrame" name="BillOptionContainer">
-                <property name="minimumSize">
-                 <size>
-                  <width>50</width>
-                  <height>60</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>200</width>
-                  <height>85</height>
-                 </size>
-                </property>
-                <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
-                <layout class="QHBoxLayout" name="horizontalLayout">
-                 <property name="spacing">
-                  <number>0</number>
-                 </property>
-                 <property name="leftMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="topMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="rightMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="bottomMargin">
-                  <number>0</number>
-                 </property>
-                 <item>
-                  <widget class="QFrame" name="BillOptions">
-                   <property name="minimumSize">
-                    <size>
-                     <width>150</width>
-                     <height>80</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>16777215</width>
-                     <height>80</height>
-                    </size>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">color:black</string>
-                   </property>
-                   <property name="frameShape">
-                    <enum>QFrame::StyledPanel</enum>
-                   </property>
-                   <property name="frameShadow">
-                    <enum>QFrame::Raised</enum>
-                   </property>
-                   <layout class="QVBoxLayout" name="verticalLayout_3">
-                    <property name="spacing">
-                     <number>0</number>
-                    </property>
-                    <property name="leftMargin">
-                     <number>0</number>
-                    </property>
-                    <property name="topMargin">
-                     <number>0</number>
-                    </property>
-                    <property name="rightMargin">
-                     <number>0</number>
-                    </property>
-                    <property name="bottomMargin">
-                     <number>0</number>
-                    </property>
-                    <item>
-                     <widget class="QPushButton" name="CreateBill">
-                      <property name="minimumSize">
-                       <size>
-                        <width>150</width>
-                        <height>30</height>
-                       </size>
-                      </property>
-                      <property name="maximumSize">
-                       <size>
-                        <width>150</width>
-                        <height>16777215</height>
-                       </size>
-                      </property>
-                      <property name="text">
-                       <string>CreateBill</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QPushButton" name="RecordBillPayment">
-                      <property name="minimumSize">
-                       <size>
-                        <width>150</width>
-                        <height>30</height>
-                       </size>
-                      </property>
-                      <property name="maximumSize">
-                       <size>
-                        <width>150</width>
-                        <height>30</height>
-                       </size>
-                      </property>
-                      <property name="text">
-                       <string>RecordBillPayment</string>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="NavButton">
-                   <property name="minimumSize">
-                    <size>
-                     <width>50</width>
-                     <height>60</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>50</width>
-                     <height>60</height>
-                    </size>
-                   </property>
-                   <property name="cursor">
-                    <cursorShape>PointingHandCursor</cursorShape>
-                   </property>
-                   <property name="autoFillBackground">
-                    <bool>false</bool>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">background-color:black;</string>
-                   </property>
-                   <property name="text">
-                    <string/>
-                   </property>
-                   <property name="icon">
-                    <iconset theme="battery">
-                     <activeon>:/images/NavbarLogo1.png</activeon>
-                    </iconset>
-                   </property>
-                   <property name="iconSize">
-                    <size>
-                     <width>70</width>
-                     <height>60</height>
-                    </size>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-              <item row="0" column="0">
+             <layout class="QVBoxLayout" name="verticalLayout_6">
+              <item>
                <widget class="QFrame" name="frame_2">
                 <property name="maximumSize">
                  <size>
@@ -719,7 +856,102 @@ li.checked::marker { content: &quot;\2612&quot;; }
                 </layout>
                </widget>
               </item>
-              <item row="5" column="0">
+              <item>
+               <widget class="QPushButton" name="NavButton">
+                <property name="minimumSize">
+                 <size>
+                  <width>50</width>
+                  <height>60</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>50</width>
+                  <height>60</height>
+                 </size>
+                </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="autoFillBackground">
+                 <bool>false</bool>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color:black;</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset theme="battery">
+                  <activeon>:/images/NavbarLogo1.png</activeon>
+                 </iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>70</width>
+                  <height>60</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QFrame" name="frame_3">
+                <property name="maximumSize">
+                 <size>
+                  <width>2000</width>
+                  <height>100</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true"/>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <layout class="QGridLayout" name="gridLayout_5">
+                 <item row="0" column="0">
+                  <widget class="QLineEdit" name="ContextOfGraph">
+                   <property name="minimumSize">
+                    <size>
+                     <width>600</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>600</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <family>Sitka Heading</family>
+                     <pointsize>12</pointsize>
+                     <italic>true</italic>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">padding-left:15px;
+
+font: 700 italic 12pt &quot;Sitka Heading&quot;;</string>
+                   </property>
+                   <property name="text">
+                    <string>Here are some graphs that we have prepared for you:</string>
+                   </property>
+                   <property name="readOnly">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
                <widget class="QFrame" name="frame">
                 <property name="maximumSize">
                  <size>

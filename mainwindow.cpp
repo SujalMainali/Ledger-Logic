@@ -106,8 +106,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->Navbar->setVisible(false);
 
     ui->Border->setVisible(false);
-    ui->SalesOptions->setVisible(false);
-    ui->BillOptions->setVisible(false);
+    ui->InvoiceOptionsFrame ->setVisible(false);
+    ui->BillOptionsFrame ->setVisible(false);
+    ui->ReportingOptionsFrame->setVisible(false);
 
 
 
@@ -138,6 +139,15 @@ MainWindow::~MainWindow()
 
 
 
+
+
+
+
+
+void MainWindow::on_Reporting_clicked()
+{
+    ui->ReportingOptionsFrame->setVisible(true);
+}
 
 
 

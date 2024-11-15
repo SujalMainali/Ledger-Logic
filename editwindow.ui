@@ -367,6 +367,16 @@ border-radius: 7px;
                  <string>EQUITY</string>
                 </property>
                </item>
+               <item>
+                <property name="text">
+                 <string>INCOME</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>EXPENSE</string>
+                </property>
+               </item>
               </widget>
              </item>
             </layout>

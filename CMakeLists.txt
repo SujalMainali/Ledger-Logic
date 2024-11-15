@@ -79,6 +79,12 @@ set(PROJECT_SOURCES
     accountactivity.cpp
     accountactivity.h
     accountactivity.ui
+
+    #including Trial Balance
+    trialbalance.cpp
+    trialbalance.h
+    trialbalance.ui
+
 )
 
 # Specify the path to your database file

@@ -53,6 +53,10 @@ private slots:
 
     void on_pushButton_2_clicked();
 
+    void on_Reporting_clicked();
+
+    void on_TrialBalance_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

@@ -10,6 +10,8 @@ int16_t AddWindow::GetTypeIdFromType(QString type){
         if(type=="ASSETS") return 1;
         else if(type=="LIABILITIES") return 2;
         else if(type=="EQUITY") return 3;
+        else if(type=="INCOME") return 4;
+        else if(type=="EXPENSE") return 5;
         else return -1;
     }
 
