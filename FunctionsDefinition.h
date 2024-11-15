@@ -13,6 +13,7 @@
 #include "CreateJournal.h"
 #include "ledgersummary.h"
 #include "trialbalance.h"
+#include "placcount.h"
 
 
 
@@ -208,6 +209,17 @@ void MainWindow::on_TrialBalance_clicked()
     TrialBalanceWin->resize(currentSize);
     TrialBalanceWin->move(currentPosition);
     TrialBalanceWin->show();
+    this->close();
+}
+
+void MainWindow::on_PLReport_clicked()
+{
+    PLAccount *PLAccountWin=new PLAccount();
+    QSize currentSize = this->size();
+    QPoint currentPosition = this->pos();
+    PLAccountWin->resize(currentSize);
+    PLAccountWin->move(currentPosition);
+    PLAccountWin->show();
     this->close();
 }
 

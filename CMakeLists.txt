@@ -85,6 +85,11 @@ set(PROJECT_SOURCES
     trialbalance.h
     trialbalance.ui
 
+    #including Profit and Loss
+    placcount.cpp
+    placcount.h
+    placcount.ui
+
 )
 
 # Specify the path to your database file

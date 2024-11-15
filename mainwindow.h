@@ -57,6 +57,8 @@ private slots:
 
     void on_TrialBalance_clicked();
 
+    void on_PLReport_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
