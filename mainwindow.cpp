@@ -27,7 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
     RetrieveDataForSalesGraph(SalesSeries);
 
 
-    SalesSeries->setName("August");//This gives a name to the series
+    SalesSeries->setName("November");//This gives a name to the series
 
 
 
@@ -47,7 +47,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     //axisX->setLabelsPosition(QCategoryAxis::AxisLabelsPositionOnValue);//Alligns the lebel in specified manner
-    axisX->setRange(0,20);
+    axisX->setRange(0,30);
 
     //These two codes adds the axis to graph
     SalesChart->addAxis(axisX,Qt::AlignBottom);
@@ -56,9 +56,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     QValueAxis *axisY = new QValueAxis(this) ;//This is used for manipulation of Y-axis
 
-    axisY->setRange(0,1000);
+    axisY->setRange(0,30000);
 
-    SalesChart->setTitle("Sales Data From Last Month");
+    SalesChart->setTitle("Sales Data From This Month");
 
     SalesChart->addAxis(axisY,Qt::AlignLeft);
     SalesSeries->attachAxis(axisY);
@@ -72,7 +72,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     RetrieveDataForPurchaseGraph(PurchaseSeries);
 
-    PurchaseSeries->setName("August");
+    PurchaseSeries->setName("November");
 
     PurchaseChart->addSeries(PurchaseSeries);
     PurchaseChart->legend()->show();
@@ -82,8 +82,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     QValueAxis *axisX1= new QValueAxis(this);
     QValueAxis *axisY1 = new QValueAxis(this) ;
-    axisX1->setRange(0,20);
-    axisY1->setRange(0,1000);
+    axisX1->setRange(0,30);
+    axisY1->setRange(0,30000);
 
 
 
@@ -92,7 +92,7 @@ MainWindow::MainWindow(QWidget *parent)
     PurchaseSeries->attachAxis(axisX1);
 
 
-    PurchaseChart->setTitle("Purchase Data From Last Month");
+    PurchaseChart->setTitle("Purchase Data From This Month");
     PurchaseChart->addAxis(axisY1, Qt::AlignLeft);
     PurchaseSeries->attachAxis(axisY1);
 

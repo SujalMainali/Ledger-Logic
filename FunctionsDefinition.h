@@ -25,7 +25,7 @@ void MainWindow::RetrieveDataForSalesGraph(QLineSeries *series) {
     QSqlDatabase db;
     db=MainWindow::db;
     // Ensure the query is valid and can execute
-    QSqlQuery query("SELECT transaction_date, total_amount FROM SalesTransactions");
+    QSqlQuery query("SELECT issue_date, total_amount FROM SalesTransactions");
     if (!query.exec()) {
         qDebug() << "Error: failed to execute Salesquery";
         return;
