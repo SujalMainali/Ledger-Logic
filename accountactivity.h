@@ -26,6 +26,8 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_GoBack_clicked();
+
 private:
     Ui::ActivitySummary *ui;
 };

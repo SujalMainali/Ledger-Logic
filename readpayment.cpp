@@ -65,7 +65,8 @@ void ReadPayment::on_InvoiceTable_cellDoubleClicked(int row, int column)
 
 void ReadPayment::on_Save_clicked()
 {
-    QSqlDatabase db;
+    try{
+        QSqlDatabase db;
         db = MainWindow::db;
         QSqlQuery query, Loadquery;
 
@@ -76,7 +77,15 @@ void ReadPayment::on_Save_clicked()
         query.prepare("UPDATE SalesTransactions SET received_amount = received_amount + :additionalPayment, remaining_amount = remaining_amount - :additionalPayment WHERE invoice_number = :billNumber");
 
         InvoiceBillFunctions::saveAdditionalPaymentsToDatabase(ui->InvoiceTable,ui->ReadBankAccount, query, Loadquery,db,true);
-
+    }
+    catch (const std::exception &e) {
+        QMessageBox *msgBox=MainWindow::createStyledMessageBox("Error","An error occurred while saving:",e.what());
+        msgBox->exec();
+    }
+    catch (...) {
+        QMessageBox *msgBox=MainWindow::createStyledMessageBox("Error","UnknownErrorOccured","");;
+        msgBox->exec();
+    }
 
 }
 

@@ -31,14 +31,10 @@ void CreateInvoice::on_ItemsTable_cellChanged(int row, int column)
 void CreateInvoice::saveTransactionItems() {
     QString invoiceNumber = ui->ReadInvoiceNo->text();
 
-    if (invoiceNumber.isEmpty()) {
-        QMessageBox::warning(this, "Input Error", "Please enter an invoice number.");
-        return;
-    }
 
-    QSqlDatabase db =MainWindow::db;
+    QSqlDatabase db = MainWindow::db;
     if (!db.isOpen()) {
-        qDebug() << "Failed to open the database!";
+        QMessageBox::critical(this, "Database Error", "Failed to open the database!");
         return;
     }
 
@@ -65,6 +61,11 @@ void CreateInvoice::saveTransactionItems() {
             continue; // Skip this iteration if no combo box is found
         }
 
+        // Check if any required field is empty or invalid
+        if (productName.isEmpty() || rate <= 0 || units <= 0 || amount <= 0.0 || accountName.isEmpty()) {
+            throw std::invalid_argument("Fill Proper Data for row "+(row+1));
+        }
+
         // Bind values
         query.bindValue(":invoice_number", invoiceNumber);
         query.bindValue(":product_name", productName);
@@ -73,14 +74,15 @@ void CreateInvoice::saveTransactionItems() {
         query.bindValue(":amount", amount);
         query.bindValue(":account_name", accountName); // Bind account name
 
-        // Execute the query
-        if (!query.exec()) {
-            qDebug() << "Failed to insert sales transaction item:" << query.lastError().text();
-        } else {
-            qDebug() << "Inserted row for product:" << productName;
-        }
+            // Execute the query
+            if (!query.exec()) {
+                throw std::runtime_error("Failed to insert sales transaction item: " + query.lastError().text().toStdString());
+            } else {
+                qDebug() << "Inserted row for product:" << productName;
+            }
     }
 }
+
 
 
 void CreateInvoice::saveSalesTransaction() {
@@ -88,8 +90,7 @@ void CreateInvoice::saveSalesTransaction() {
     QString invoiceNumber = ui->ReadInvoiceNo->text();
 
     if (invoiceNumber.isEmpty()) {
-        QMessageBox::warning(this, "Input Error", "Please enter an invoice number.");
-        return;
+        throw std::invalid_argument("Invoice number is empty.");
     }
 
     // Get customer details from the UI
@@ -130,7 +131,7 @@ void CreateInvoice::saveSalesTransaction() {
 
     // Execute the query for inserting the sales transaction
     if (!query.exec()) {
-        qDebug() << "Failed to insert sales transaction:" << query.lastError().text();
+        throw std::runtime_error("Failed to insert Items to database: "+query.lastError().text().toStdString());
     } else {
         qDebug() << "Inserted sales transaction for invoice:" << invoiceNumber;
 
@@ -143,7 +144,7 @@ void CreateInvoice::saveSalesTransaction() {
 
         // Execute the update query
         if (!updateQuery.exec()) {
-            qDebug() << "Failed to update remaining amount for invoice:" << query.lastError().text();
+            throw std::runtime_error("Failed to update Items to database: "+query.lastError().text().toStdString());
         } else {
             qDebug() << "Updated remaining amount for invoice:" << invoiceNumber;
         }
@@ -262,7 +263,6 @@ void CreateInvoice::createJournalEntryForInvoice() {
         CreateJournal::UpdateAccountBalances(salesAccountId,amount,false,db);
     }
 
-
 }
 
 
@@ -281,18 +281,31 @@ void CreateInvoice::on_CancelButton_clicked()
 
 
 
-void CreateInvoice::on_SaveButton_clicked()
-{
-    saveSalesTransaction();
-    saveTransactionItems();
-    createJournalEntryForInvoice();
-    MainWindow *MainWin=new MainWindow();
-    QSize currentSize = this->size();
-    QPoint currentPosition = this->pos();
-    MainWin->resize(currentSize);
-    MainWin->move(currentPosition);
-    MainWin->show();
-    this->close();
-    delete this;
+void CreateInvoice::on_SaveButton_clicked() {
+    try {
+        // Call the functions to save sales transaction, transaction items, and create journal entry
+        saveSalesTransaction();
+        saveTransactionItems();
+        createJournalEntryForInvoice();
+
+        // If everything is successful, proceed to the next step
+        MainWindow *MainWin = new MainWindow();
+        QSize currentSize = this->size();
+        QPoint currentPosition = this->pos();
+        MainWin->resize(currentSize);
+        MainWin->move(currentPosition);
+        MainWin->show();
+        this->close();
+        delete this;
+    }
+    catch (const std::exception &e) {
+        QMessageBox *msgBox=MainWindow::createStyledMessageBox("Error","An error occurred while saving:",e.what());
+        msgBox->exec();
+    }
+    catch (...) {
+        QMessageBox *msgBox=MainWindow::createStyledMessageBox("Error","UnknownErrorOccured","");;
+        msgBox->exec();
+    }
 }
+
 

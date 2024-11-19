@@ -124,3 +124,16 @@ void ActivitySummary::on_pushButton_clicked()
 
 }
 
+
+void ActivitySummary::on_GoBack_clicked()
+{
+    LedgerSummary *LedgerWin=new LedgerSummary();
+    QSize currentSize = this->size();
+            QPoint currentPosition = this->pos();
+            LedgerWin->resize(currentSize);
+            LedgerWin->move(currentPosition);
+            LedgerWin->show();
+            this->close();
+            delete this;
+}
+

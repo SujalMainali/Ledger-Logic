@@ -15,6 +15,7 @@ class PLAccount : public QMainWindow
 public:
     PLAccount(QWidget *parent = nullptr);
     void fetchProfitAndLossData();
+    static double calculateNetProfitOrLoss();
     QStandardItemModel *model;
     ~PLAccount();
 

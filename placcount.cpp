@@ -20,7 +20,12 @@ PLAccount::PLAccount(QWidget *parent)
 
 void PLAccount::fetchProfitAndLossData() {
     QSqlDatabase db = MainWindow::db;
-    QSqlQuery query("SELECT coa.account_name, ab.current_balance, coa.type "
+    if (!db.isOpen()) {
+        qDebug() << "Database connection is not open!";
+        return;
+    }
+
+    QSqlQuery query("SELECT coa.account_name, ABS(ab.current_balance) AS absolute_balance, coa.type "
                     "FROM ChartOfAccounts coa "
                     "JOIN AccountBalances ab ON coa.account_id = ab.account_id "
                     "WHERE coa.type IN ('INCOME', 'EXPENSES') "
@@ -33,7 +38,7 @@ void PLAccount::fetchProfitAndLossData() {
 
     while (query.next()) {
         QString accountName = query.value(0).toString();
-        double currentBalance = query.value(1).toDouble();
+        double currentBalance = query.value(1).toDouble(); // Now an absolute value
         QString accountType = query.value(2).toString();
 
         if (accountType == "INCOME") {
@@ -48,7 +53,7 @@ void PLAccount::fetchProfitAndLossData() {
     incomeItem->appendRow({totalIncomeItem, new QStandardItem(QString::number(totalIncome))});
 
     // Expenses Section
-    QSqlQuery expenseQuery("SELECT coa.account_name, ab.current_balance "
+    QSqlQuery expenseQuery("SELECT coa.account_name, ABS(ab.current_balance) AS absolute_balance "
                            "FROM ChartOfAccounts coa "
                            "JOIN AccountBalances ab ON coa.account_id = ab.account_id "
                            "WHERE coa.type = 'EXPENSES' ORDER BY coa.account_name");
@@ -59,7 +64,7 @@ void PLAccount::fetchProfitAndLossData() {
 
     while (expenseQuery.next()) {
         QString accountName = expenseQuery.value(0).toString();
-        double currentBalance = expenseQuery.value(1).toDouble();
+        double currentBalance = expenseQuery.value(1).toDouble(); // Now an absolute value
         expenseItem->appendRow({new QStandardItem(accountName), new QStandardItem(QString::number(currentBalance))});
         totalExpenses += currentBalance;
     }
@@ -69,7 +74,6 @@ void PLAccount::fetchProfitAndLossData() {
     totalExpensesItem->setFont(QFont("Arial", 10, QFont::Bold));
     expenseItem->appendRow({totalExpensesItem, new QStandardItem(QString::number(totalExpenses))});
 
-
     // Add Net Profit/Loss
     QStandardItem *netProfitItem = new QStandardItem("Net Profit/Loss");
     model->appendRow(netProfitItem);
@@ -78,11 +82,50 @@ void PLAccount::fetchProfitAndLossData() {
     netProfitLossAmountItem->setFont(QFont("Arial", 10, QFont::Bold));  // Make amount bold
     netProfitItem->appendRow({new QStandardItem("Net Profit/Loss"), netProfitLossAmountItem});
 
+    // Expand all rows
     for (int row = 0; row < model->rowCount(); ++row) {
-            QModelIndex index = model->index(row, 0); // Column 0 is where the item is located
-            ui->PLTable->expand(index);  // Expand the row
-        }
+        QModelIndex index = model->index(row, 0); // Column 0 is where the item is located
+        ui->PLTable->expand(index);  // Expand the row
+    }
 }
+
+double PLAccount::calculateNetProfitOrLoss() {
+    QSqlDatabase db = MainWindow::db;
+    if (!db.isOpen()) {
+        qDebug() << "Database connection is not open!";
+        return 0.0;
+    }
+
+    double totalIncome = 0.0;
+    double totalExpenses = 0.0;
+
+    // Query to calculate total income
+    QSqlQuery incomeQuery("SELECT SUM(ABS(ab.current_balance)) AS total_income "
+                          "FROM ChartOfAccounts coa "
+                          "JOIN AccountBalances ab ON coa.account_id = ab.account_id "
+                          "WHERE coa.type = 'INCOME'");
+    if (incomeQuery.next()) {
+        totalIncome = incomeQuery.value(0).toDouble();
+    } else {
+        qDebug() << "Failed to fetch total income:" << incomeQuery.lastError().text();
+    }
+
+    // Query to calculate total expenses
+    QSqlQuery expenseQuery("SELECT SUM(ABS(ab.current_balance)) AS total_expenses "
+                           "FROM ChartOfAccounts coa "
+                           "JOIN AccountBalances ab ON coa.account_id = ab.account_id "
+                           "WHERE coa.type = 'EXPENSES'");
+    if (expenseQuery.next()) {
+        totalExpenses = expenseQuery.value(0).toDouble();
+    } else {
+        qDebug() << "Failed to fetch total expenses:" << expenseQuery.lastError().text();
+    }
+
+    // Calculate Net Profit/Loss
+    double netProfitLoss = totalIncome - totalExpenses;
+    return netProfitLoss;
+}
+
 
 
 

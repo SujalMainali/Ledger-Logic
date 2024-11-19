@@ -1,6 +1,7 @@
 #include "balancesheet.h"
 #include "./ui_balancesheet.h"
 #include "mainwindow.h"
+#include "placcount.h"
 #include <QtSql>
 
 BalanceSheet::BalanceSheet(QWidget *parent)
@@ -26,6 +27,9 @@ void BalanceSheet::fetchBalanceSheetData()
         return;
     }
 
+    // Fetch Net Profit/Loss
+    double netProfitLoss = PLAccount::calculateNetProfitOrLoss();
+
     // Add top-level items
     QStandardItem *assetsItem = new QStandardItem("Assets");
     QStandardItem *liabilitiesItem = new QStandardItem("Liabilities");
@@ -36,7 +40,7 @@ void BalanceSheet::fetchBalanceSheetData()
     model->appendRow(equityItem);
 
     QFont boldFont;
-    boldFont.setBold(true); // Define a bold font
+    boldFont.setBold(true);
 
     // Query and populate Assets
     QSqlQuery assetsQuery("SELECT coa.account_name, ab.current_balance "
@@ -46,13 +50,12 @@ void BalanceSheet::fetchBalanceSheetData()
     double totalAssets = 0.0;
     while (assetsQuery.next()) {
         QString accountName = assetsQuery.value(0).toString();
-        double balance = qAbs(assetsQuery.value(1).toDouble()); // Always positive
+        double balance = qAbs(assetsQuery.value(1).toDouble());
 
         assetsItem->appendRow({new QStandardItem(accountName), new QStandardItem(QString::number(balance, 'f', 2))});
         totalAssets += balance;
     }
 
-    // Add Total Assets row and set font
     QStandardItem *totalAssetsLabel = new QStandardItem("Total Assets");
     totalAssetsLabel->setFont(boldFont);
     QStandardItem *totalAssetsValue = new QStandardItem(QString::number(totalAssets, 'f', 2));
@@ -67,13 +70,12 @@ void BalanceSheet::fetchBalanceSheetData()
     double totalLiabilities = 0.0;
     while (liabilitiesQuery.next()) {
         QString accountName = liabilitiesQuery.value(0).toString();
-        double balance = qAbs(liabilitiesQuery.value(1).toDouble()); // Always positive
+        double balance = qAbs(liabilitiesQuery.value(1).toDouble());
 
         liabilitiesItem->appendRow({new QStandardItem(accountName), new QStandardItem(QString::number(balance, 'f', 2))});
         totalLiabilities += balance;
     }
 
-    // Add Total Liabilities row and set font
     QStandardItem *totalLiabilitiesLabel = new QStandardItem("Total Liabilities");
     totalLiabilitiesLabel->setFont(boldFont);
     QStandardItem *totalLiabilitiesValue = new QStandardItem(QString::number(totalLiabilities, 'f', 2));
@@ -88,13 +90,16 @@ void BalanceSheet::fetchBalanceSheetData()
     double totalEquity = 0.0;
     while (equityQuery.next()) {
         QString accountName = equityQuery.value(0).toString();
-        double balance = qAbs(equityQuery.value(1).toDouble()); // Always positive
+        double balance = qAbs(equityQuery.value(1).toDouble());
+
+        if (accountName == "Retained Earnings") {
+            balance += netProfitLoss;
+        }
 
         equityItem->appendRow({new QStandardItem(accountName), new QStandardItem(QString::number(balance, 'f', 2))});
         totalEquity += balance;
     }
 
-    // Add Total Equity row and set font
     QStandardItem *totalEquityLabel = new QStandardItem("Total Equity");
     totalEquityLabel->setFont(boldFont);
     QStandardItem *totalEquityValue = new QStandardItem(QString::number(totalEquity, 'f', 2));
@@ -104,7 +109,7 @@ void BalanceSheet::fetchBalanceSheetData()
     // Calculate Net Worth
     double netWorth = totalAssets - totalLiabilities;
 
-    // Validate that Net Worth matches Total Equity
+    // Net Worth Validation
     QString validationMessage;
     if (qFuzzyCompare(netWorth + 1, totalEquity + 1)) {
         validationMessage = QString("Net Worth and Equity are balanced: %1").arg(netWorth, 0, 'f', 2);
@@ -114,14 +119,19 @@ void BalanceSheet::fetchBalanceSheetData()
                                 .arg(totalEquity, 0, 'f', 2);
     }
 
+    // Add Net Worth validation to the table
     QStandardItem *netWorthItem = new QStandardItem("Net Worth");
-    netWorthItem->appendRow({new QStandardItem(validationMessage), new QStandardItem(QString::number(netWorth, 'f', 2))});
-
+    QStandardItem *validationItem = new QStandardItem(validationMessage);
+    QStandardItem *netWorthValueItem = new QStandardItem(QString::number(netWorth, 'f', 2));
+    netWorthItem->appendRow({validationItem, netWorthValueItem});
     model->appendRow(netWorthItem);
 
     // Expand all rows by default
     ui->BalanceSheetTable->expandAll();
 }
+
+
+
 
 BalanceSheet::~BalanceSheet()
 {

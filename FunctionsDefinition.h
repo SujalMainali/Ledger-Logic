@@ -23,11 +23,12 @@ void MainWindow::RetrieveDataForSalesGraph(QLineSeries *series) {
     QVector<QPointF> data;  // Vector to store (x, y) data
 
     QSqlDatabase db;
-    db=MainWindow::db;
-    // Ensure the query is valid and can execute
-    QSqlQuery query("SELECT issue_date, total_amount FROM SalesTransactions");
+    db = MainWindow::db;
+
+    // Ensure the query is valid and can execute, ordering by issue_date in ascending order
+    QSqlQuery query("SELECT issue_date, total_amount FROM SalesTransactions ORDER BY issue_date ASC");
     if (!query.exec()) {
-        qDebug() << "Error: failed to execute Salesquery";
+        qDebug() << "Error: failed to execute Sales query";
         return;
     }
 
@@ -39,21 +40,20 @@ void MainWindow::RetrieveDataForSalesGraph(QLineSeries *series) {
         // Append current entry (day and money) directly to the series
         series->append(dateTime.date().day(), money);  // Append to the series directly
     }
-
 }
 
 void MainWindow::RetrieveDataForPurchaseGraph(QLineSeries *series) {
     QVector<QPointF> data;  // Vector to store (x, y) data
 
     QSqlDatabase db;
-    db=MainWindow::db;
-    QSqlQuery query("SELECT transaction_date, total_amount FROM BillTransactions");
+    db = MainWindow::db;
+
+    // Ensure the query is valid and can execute, ordering by transaction_date in ascending order
+    QSqlQuery query("SELECT transaction_date, total_amount FROM BillTransactions ORDER BY transaction_date ASC");
     if (!query.exec()) {
         qDebug() << "Error: failed to execute Purchase query";
         return;
     }
-
-
 
     // Process the query results
     while (query.next()) {  // Iterate through the query results
@@ -63,8 +63,10 @@ void MainWindow::RetrieveDataForPurchaseGraph(QLineSeries *series) {
         // Append current entry (day and money) directly to the series
         series->append(dateTime.date().day(), money);  // Append to the series directly
     }
-
 }
+
+
+
 
 
 void MainWindow::ConnectDatabase() {
@@ -92,6 +94,46 @@ void MainWindow::ConnectDatabase() {
     } else {
         qDebug() << "Database Opened!";
     }
+}
+
+QMessageBox* MainWindow::createStyledMessageBox(const QString& title, const QString& text, const QString& informativeText) {
+    // Create a new QMessageBox
+    QMessageBox* msgBox = new QMessageBox();
+    msgBox->setIcon(QMessageBox::Critical);
+    msgBox->setWindowTitle(title);
+    msgBox->setText(text);
+    msgBox->setInformativeText(informativeText);
+
+    // Apply custom dark theme style
+    QString styleSheet = R"(
+        QMessageBox {
+            background-color: #2E2E2E; /* Dark background */
+            color: #E0E0E0; /* Light text */
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+        QMessageBox QLabel {
+            color: #E0E0E0; /* Light text color for the label */
+        }
+        QMessageBox QPushButton {
+            background-color: #444444; /* Dark button background */
+            color: #E0E0E0; /* Light text on buttons */
+            border: 1px solid #555555; /* Button border color */
+            border-radius: 3px;
+            padding: 5px 10px;
+        }
+        QMessageBox QPushButton:hover {
+            background-color: #666666; /* Button hover effect */
+        }
+        QMessageBox QPushButton:pressed {
+            background-color: #888888; /* Button pressed effect */
+        }
+    )";
+
+    msgBox->setStyleSheet(styleSheet);
+
+    return msgBox;
 }
 
 

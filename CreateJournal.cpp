@@ -67,93 +67,110 @@ void CreateJournal::UpdateAccountBalances(int accountId, double amount, bool isD
 
 void CreateJournal::on_Save_clicked()
 {
-    QString journalNo = ui->ReadJournalNo->text();
-    QString date = ui->ReadDate->text();
-    QString memo = ui->ReadDescription->toPlainText();
+    try{
+        QString journalNo = ui->ReadJournalNo->text();
+        QString date = ui->ReadDate->text();
+        QString memo = ui->ReadDescription->toPlainText();
 
-    // Check if any required fields are empty
-    if (journalNo.isEmpty() || date.isEmpty() || memo.isEmpty()) {
-        QMessageBox::warning(this, "Input Error", "Please fill in all required fields before saving.");
-        return; // Exit the function if any of the required fields are empty
-    }
-
-    // Connect to the database
-    QSqlDatabase db = MainWindow::db;
-    if (!db.isOpen()) {
-        qDebug() << "Error: Could not open the database.";
-        return;
-    }
-
-    // Insert the journal entry into the JournalEntries table
-    QSqlQuery journalQuery;
-    journalQuery.prepare("INSERT INTO JournalEntries (journal_number, date, memo) VALUES (:journalNo, :date, :memo)");
-    journalQuery.bindValue(":journalNo", journalNo);
-    journalQuery.bindValue(":date", date);
-    journalQuery.bindValue(":memo", memo);
-
-    if (!journalQuery.exec()) {
-        qDebug() << "Error inserting journal entry:" << journalQuery.lastError().text();
-        return;
-    }
-
-    // Retrieve the journal_id of the newly inserted journal entry
-    int journalId = journalQuery.lastInsertId().toInt();
-
-    QComboBox *comboBox;
-    // Insert each line from the journalTableWidget into JournalEntryLines
-    for (int row = 0; row < ui->JournalTable->rowCount(); ++row) {
-        comboBox = qobject_cast<QComboBox*>(ui->JournalTable->cellWidget(row, 0));
-        QString accountName = comboBox->currentText();
-        QString debitStr = ui->JournalTable->item(row, 1)->text();
-        QString creditStr = ui->JournalTable->item(row, 2)->text();
-
-        // Check if any of the required cells are empty or contain invalid values
-        if (accountName.isEmpty() || debitStr.isEmpty() || creditStr.isEmpty()) {
-            QMessageBox::warning(this, "Input Error", "Please fill in all fields in the journal table. Enter 0 in either the debit or credit field.");
-            return; // Exit the function if any fields are empty
+        // Check if any required fields are empty
+        if (journalNo.isEmpty() || date.isEmpty() || memo.isEmpty()) {
+            throw std::invalid_argument("Enter all Proper Fields regarding Journal");
         }
 
-        double amount = 0.0;
-        bool isDebit = false;
-
-        // Check if the debit or credit is zero instead of empty
-        if (debitStr.toDouble() != 0.0) {
-            amount = debitStr.toDouble();
-            isDebit = true;
-        } else if (creditStr.toDouble() != 0.0) {
-            amount = creditStr.toDouble();
-            isDebit = false;
+        // Connect to the database
+        QSqlDatabase db = MainWindow::db;
+        if (!db.isOpen()) {
+            qDebug() << "Error: Could not open the database.";
+            return;
         }
 
-        QSqlQuery accountQuery;
-        accountQuery.prepare("SELECT account_id FROM ChartOfAccounts WHERE account_name = :accountName");
-        accountQuery.bindValue(":accountName", accountName);
+        // Insert the journal entry into the JournalEntries table
+        QSqlQuery journalQuery;
+        journalQuery.prepare("INSERT INTO JournalEntries (journal_number, date, memo) VALUES (:journalNo, :date, :memo)");
+        journalQuery.bindValue(":journalNo", journalNo);
+        journalQuery.bindValue(":date", date);
+        journalQuery.bindValue(":memo", memo);
 
-        if (!accountQuery.exec() || !accountQuery.next()) {
-            qDebug() << "Error retrieving account ID for account name" << accountName << ":" << accountQuery.lastError().text();
-            continue;
+        if (!journalQuery.exec()) {
+            qDebug() << "Error inserting journal entry:" << journalQuery.lastError().text();
+            return;
         }
 
-        int accountId = accountQuery.value(0).toInt();
+        // Retrieve the journal_id of the newly inserted journal entry
+        int journalId = journalQuery.lastInsertId().toInt();
 
-        // Insert the journal entry line into the JournalEntryLines table
-        QSqlQuery lineQuery;
-        lineQuery.prepare("INSERT INTO JournalEntryLines (journal_id, account_id, amount, is_debit) "
-                          "VALUES (:journalId, :accountId, :amount, :isDebit)");
-        lineQuery.bindValue(":journalId", journalId);
-        lineQuery.bindValue(":accountId", accountId);
-        lineQuery.bindValue(":amount", amount);
-        lineQuery.bindValue(":isDebit", isDebit);
+        QComboBox *comboBox;
+        // Insert each line from the journalTableWidget into JournalEntryLines
+        for (int row = 0; row < ui->JournalTable->rowCount(); ++row) {
+            comboBox = qobject_cast<QComboBox*>(ui->JournalTable->cellWidget(row, 0));
+            QString accountName = comboBox->currentText();
+            QString debitStr = ui->JournalTable->item(row, 1)->text();
+            QString creditStr = ui->JournalTable->item(row, 2)->text();
 
-        if (!lineQuery.exec()) {
-            qDebug() << "Error inserting journal entry line:" << lineQuery.lastError().text();
+            // Check if any of the required cells are empty or contain invalid values
+            if (accountName.isEmpty() || debitStr.isEmpty() || creditStr.isEmpty()) {
+                throw std::invalid_argument("Invalid Input in row "+(row+1));
+            }
+
+            double amount = 0.0;
+            bool isDebit = false;
+
+            // Check if the debit or credit is zero instead of empty
+            if (debitStr.toDouble() != 0.0) {
+                amount = debitStr.toDouble();
+                isDebit = true;
+            } else if (creditStr.toDouble() != 0.0) {
+                amount = creditStr.toDouble();
+                isDebit = false;
+            }
+
+            QSqlQuery accountQuery;
+            accountQuery.prepare("SELECT account_id FROM ChartOfAccounts WHERE account_name = :accountName");
+            accountQuery.bindValue(":accountName", accountName);
+
+            if (!accountQuery.exec() || !accountQuery.next()) {
+                qDebug() << "Error retrieving account ID for account name" << accountName << ":" << accountQuery.lastError().text();
+                continue;
+            }
+
+            int accountId = accountQuery.value(0).toInt();
+
+            // Insert the journal entry line into the JournalEntryLines table
+            QSqlQuery lineQuery;
+            lineQuery.prepare("INSERT INTO JournalEntryLines (journal_id, account_id, amount, is_debit) "
+                              "VALUES (:journalId, :accountId, :amount, :isDebit)");
+            lineQuery.bindValue(":journalId", journalId);
+            lineQuery.bindValue(":accountId", accountId);
+            lineQuery.bindValue(":amount", amount);
+            lineQuery.bindValue(":isDebit", isDebit);
+
+            if (!lineQuery.exec()) {
+                qDebug() << "Error inserting journal entry line:" << lineQuery.lastError().text();
+            }
+
+            CreateJournal::UpdateAccountBalances(accountId, amount, isDebit, db);
         }
 
-        CreateJournal::UpdateAccountBalances(accountId, amount, isDebit, db);
+
+        QMessageBox *SucessBox=MainWindow::createStyledMessageBox("Sucess","Journal Entery have been sucessfully created ",journalNo);
+        SucessBox->exec();
+        MainWindow *MainWin=new MainWindow();
+        QSize currentSize = this->size();
+        QPoint currentPosition = this->pos();
+        MainWin->resize(currentSize);
+        MainWin->move(currentPosition);
+        MainWin->show();
+        this->close();
+        delete this;
     }
-
-
-    qDebug() << "Journal entry and lines saved successfully!";
+    catch (const std::exception &e) {
+        QMessageBox *msgBox=MainWindow::createStyledMessageBox("Error","An error occurred while saving:",e.what());
+        msgBox->exec();
+    }
+    catch (...) {
+        QMessageBox *msgBox=MainWindow::createStyledMessageBox("Error","UnknownErrorOccured","");;
+        msgBox->exec();
+    }
 }
 
 

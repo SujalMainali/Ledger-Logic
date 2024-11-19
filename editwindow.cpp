@@ -178,12 +178,26 @@ void EditWindow::on_Save_clicked() {
     }
 
     if (!isParentAccount) {
+        // Fetch the updated balance from ChartOfAccounts
+        QSqlQuery fetchBalanceQuery;
+        fetchBalanceQuery.prepare("SELECT balance FROM ChartOfAccounts WHERE account_id = :account_id");
+        fetchBalanceQuery.bindValue(":account_id", currentaccountId);
+
+        if (!fetchBalanceQuery.exec() || !fetchBalanceQuery.next()) {
+            qDebug() << "Failed to fetch updated balance from ChartOfAccounts:" << fetchBalanceQuery.lastError().text();
+            return;
+        }
+
+        double updatedBalance = fetchBalanceQuery.value(0).toDouble();
+
+        // Update the AccountBalances table with the fetched balance
         QSqlQuery balanceQuery;
-        balanceQuery.prepare("INSERT INTO AccountBalances (account_id, opening_balance) "
-                             "VALUES (:account_id, :opening_balance) "
+        balanceQuery.prepare("INSERT INTO AccountBalances (account_id, opening_balance,current_balance) "
+                             "VALUES (:account_id, :opening_balance,:current_balance) "
                              "ON CONFLICT(account_id) DO UPDATE SET opening_balance = :opening_balance");
         balanceQuery.bindValue(":account_id", currentaccountId);
-        balanceQuery.bindValue(":opening_balance", ui->ReadBalance->text().toDouble());
+        balanceQuery.bindValue(":opening_balance", updatedBalance);
+        balanceQuery.bindValue(":current_balance",updatedBalance);
 
         if (!balanceQuery.exec()) {
             qDebug() << "Failed to update opening balance in AccountBalances:" << balanceQuery.lastError().text();
@@ -192,6 +206,7 @@ void EditWindow::on_Save_clicked() {
             qDebug() << "Opening balance updated successfully in AccountBalances table.";
         }
     }
+
 
     // Close the database connection
 

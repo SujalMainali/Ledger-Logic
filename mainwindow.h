@@ -8,6 +8,7 @@
 #include "chartofaccountwindow.h"
 
 
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -24,7 +25,7 @@ public:
     static QSqlDatabase db;
     void RetrieveDataForSalesGraph(QLineSeries *series);
     void RetrieveDataForPurchaseGraph(QLineSeries *series);
-
+    static QMessageBox* createStyledMessageBox(const QString& title, const QString& text, const QString& informativeText);
     static void ConnectDatabase();
 
     void OpenChartOfAccountsWindow();

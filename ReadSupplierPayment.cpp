@@ -67,13 +67,23 @@ void ReadSupplierPayment::on_BillsTable_cellDoubleClicked(int row, int column)
 
 void ReadSupplierPayment::on_Save_clicked()
 {
-    QSqlDatabase db;
-    db=MainWindow::db;
-    QSqlQuery query,Loadquery;
-    Loadquery.prepare("SELECT bill_number, supplier_name, due_date, remaining_amount FROM BillTransactions WHERE remaining_amount > 0");
+    try{
+        QSqlDatabase db;
+        db=MainWindow::db;
+        QSqlQuery query,Loadquery;
+        Loadquery.prepare("SELECT bill_number, supplier_name, due_date, remaining_amount FROM BillTransactions WHERE remaining_amount > 0");
 
-    query.prepare("UPDATE BillTransactions SET paid_amount = paid_amount + :additionalPayment, remaining_amount = remaining_amount - :additionalPayment WHERE bill_number = :billNumber");
-    InvoiceBillFunctions::saveAdditionalPaymentsToDatabase(ui->BillsTable,ui->BankAccount,query,Loadquery,db,false);
+        query.prepare("UPDATE BillTransactions SET paid_amount = paid_amount + :additionalPayment, remaining_amount = remaining_amount - :additionalPayment WHERE bill_number = :billNumber");
+        InvoiceBillFunctions::saveAdditionalPaymentsToDatabase(ui->BillsTable,ui->BankAccount,query,Loadquery,db,false);
+    }
+    catch (const std::exception &e) {
+        QMessageBox *msgBox=MainWindow::createStyledMessageBox("Error","An error occurred while saving:",e.what());
+        msgBox->exec();
+    }
+    catch (...) {
+        QMessageBox *msgBox=MainWindow::createStyledMessageBox("Error","UnknownErrorOccured","");;
+        msgBox->exec();
+    }
 
 }
 

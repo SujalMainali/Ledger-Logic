@@ -2,6 +2,7 @@
 #include "mainwindow.h"
 #include "chartofaccountwindow.h"
 #include "invoicebillfunctions.h"
+#include "CreateJournal.h"
 #include "./ui_CreateBill.h"
 #include <QSql>
 #include <QSqlDatabase>
@@ -33,8 +34,7 @@ void CreateBill::saveBillTransaction() {
     QString billNumber = ui->ReadBillNumber->text();
 
     if (billNumber.isEmpty()) {
-        QMessageBox::warning(this, "Input Error", "Please enter a bill number.");
-        return;
+        throw std::invalid_argument("Enter A Valid Bill NUmber");
     }
 
     // Get supplier details from the UI
@@ -111,7 +111,7 @@ void CreateBill::saveBillTransactionItems() {
 
     // Loop through each row in the table to read the product details
     int rowCount = ui->ItemsTable->rowCount();
-    for (int row = 0; row < rowCount; ++row) {
+    for (int row = 0; row < rowCount-1; ++row) {
         // Read product details from the QTableWidget/QTableView
         QString productName = ui->ItemsTable->item(row, 0) ? ui->ItemsTable->item(row, 0)->text() : QString();
         double rate = ui->ItemsTable->item(row, 3) ? ui->ItemsTable->item(row, 3)->text().toDouble() : 0.0;
@@ -126,6 +126,10 @@ void CreateBill::saveBillTransactionItems() {
         } else {
             qDebug() << "No combo box found at row" << row << "column 2";
             continue; // Skip this iteration if no combo box is found
+        }
+
+        if(productName.isEmpty()||rate<=0||units<=0||accountName.isEmpty()){
+            throw std::invalid_argument("Enter Proper Data for row " +(row+1));
         }
 
         // Bind values
@@ -207,6 +211,8 @@ void CreateBill::createJournalEntryForBill() {
         return;
     }
 
+    CreateJournal::UpdateAccountBalances(supplierAccountId,totalAmount,false,db);
+
     // Step 5: Debit Accounts based on UI Table Data
     int rowCount = ui->ItemsTable->rowCount();
     for (int row = 0; row < rowCount-1; ++row) {
@@ -243,6 +249,7 @@ void CreateBill::createJournalEntryForBill() {
             qDebug() << "Failed to insert debit line for account:"
                      << accountName << "with error:" << debitLineQuery.lastError().text();
         }
+        CreateJournal::UpdateAccountBalances(accountId,amount,true,db);
     }
 
 }
@@ -265,16 +272,26 @@ void CreateBill::on_Cancel_clicked()
 
 void CreateBill::on_Save_clicked()
 {
-    saveBillTransaction();
-    saveBillTransactionItems();
-    createJournalEntryForBill();
-    MainWindow *MainWin=new MainWindow();
-    QSize currentSize = this->size();
-    QPoint currentPosition = this->pos();
-    MainWin->resize(currentSize);
-    MainWin->move(currentPosition);
-    MainWin->show();
-    this->close();
-    delete this;
+    try{
+        saveBillTransaction();
+        saveBillTransactionItems();
+        createJournalEntryForBill();
+        MainWindow *MainWin=new MainWindow();
+        QSize currentSize = this->size();
+        QPoint currentPosition = this->pos();
+        MainWin->resize(currentSize);
+        MainWin->move(currentPosition);
+        MainWin->show();
+        this->close();
+        delete this;
+    }
+    catch (const std::exception &e) {
+        QMessageBox *msgBox=MainWindow::createStyledMessageBox("Error","An error occurred while saving:",e.what());
+        msgBox->exec();
+    }
+    catch (...) {
+        QMessageBox* msgBox=MainWindow::createStyledMessageBox("Error","UnknownErrorOccured","");;
+        msgBox->exec();
+    }
 }
 

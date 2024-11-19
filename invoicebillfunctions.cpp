@@ -109,8 +109,7 @@ void InvoiceBillFunctions::saveAdditionalPaymentsToDatabase(QTableWidget *Table,
     // Get the currently selected row
     int selectedRow = Table->currentRow();
     if (selectedRow == -1) {
-        QMessageBox::warning(nullptr, "No Selection", "Please select a bill entry to update.");
-        return;
+        throw std::runtime_error("Invalid Row Selected");
     }
 
     // Retrieve the items for the selected row
@@ -123,8 +122,7 @@ void InvoiceBillFunctions::saveAdditionalPaymentsToDatabase(QTableWidget *Table,
 
         // Check if the additional payment is valid
         if (additionalPayment <= 0) {
-            QMessageBox::warning(nullptr, "Invalid Input", "Please enter a valid additional payment amount.");
-            return;
+            throw std::invalid_argument("Invalid Additional Amount);
         }
 
         // Bind values to the query passed as a parameter
@@ -133,9 +131,10 @@ void InvoiceBillFunctions::saveAdditionalPaymentsToDatabase(QTableWidget *Table,
 
         // Execute the query and check for errors
         if (!query.exec()) {
-            QMessageBox::critical(nullptr, "Database Error", "Failed to update the database: " + query.lastError().text());
+            throw std::runtime_error("Failed To insert Payment to database" +query.lastError().text().toStdString());
         } else {
-            QMessageBox::information(nullptr, "Success", "Additional payment has been updated successfully.");
+            QMessageBox *SucessBox=MainWindow::createStyledMessageBox("Success","Additional Payment Is saved Sucessfully",billNumber);
+            SucessBox->exec();
             InvoiceBillFunctions::createJournalEntryForPayment(BankAccount,billNumber,additionalPayment,db,isINvoice);
 
             // Refresh the table to reflect changes
