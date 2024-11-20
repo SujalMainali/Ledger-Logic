@@ -53,6 +53,11 @@ void AddWindow:: AddChildToDatabase(){
     query.prepare("INSERT INTO ChartOfAccounts (account_name, account_id, balance, type, type_id, parent_header) "
                   "VALUES (:account_name, :account_id, :balance, :type, :type_id, :parent_header)");
 
+
+    if(accountName.isEmpty()||accountCode.isEmpty()||accountType.isEmpty()||balance.isEmpty()||parentHeader.isEmpty()){
+        throw std::invalid_argument("Invalid Input Regarding Account");
+    }
+
     query.bindValue(":account_name", accountName);
     query.bindValue(":account_id", accountCode.toInt()); // Assuming account_code is the integer ID
     query.bindValue(":balance", balance.toDouble());
@@ -61,7 +66,7 @@ void AddWindow:: AddChildToDatabase(){
     query.bindValue(":parent_header", parentHeader);
 
     if (!query.exec()) {
-        qDebug() << "Error adding item to database:" << query.lastError().text();
+        throw std::runtime_error("Failed to insert item to database: "+query.lastError().text().toStdString());
     }
     else {
         qDebug() << "Item saved successfully!";
@@ -93,6 +98,11 @@ void AddWindow::AddParentToDatabase() {
     qint8 *typeID = new qint8();
     *typeID = GetTypeIdFromType(parentType);
 
+    if(parentName.isEmpty()||parentCode.isEmpty()||parentType.isEmpty()){
+            throw std::invalid_argument("Invalid Input Regarding Account");
+        }
+
+
     // Prepare the query to insert the parent account
     QSqlQuery query;
     query.prepare("INSERT INTO ParentAccounts (parent_id, parent_name, type, type_id) "
@@ -106,7 +116,7 @@ void AddWindow::AddParentToDatabase() {
 
     // Execute the query and check for errors
     if (!query.exec()) {
-        qDebug() << "Error adding parent to database:" << query.lastError().text();
+        throw std::runtime_error("Failed to insert item to database: "+query.lastError().text().toStdString());
     } else {
         qDebug() << "Parent account saved successfully!";
     }
@@ -142,7 +152,7 @@ void AddWindow::AddAccountToBalanceTable(int accountId, double openingBalance) {
 
     // Execute the query and check for errors
     if (!query.exec()) {
-        qDebug() << "Error adding account to AccountBalances:" << query.lastError().text();
+        throw std::runtime_error("Failed to insert item to Account Balances database: "+query.lastError().text().toStdString());
     } else {
         qDebug() << "Account added to AccountBalances successfully!";
     }
@@ -178,20 +188,31 @@ void AddWindow::PopulateSelectHeader(){
 
 void AddWindow::on_Save_clicked()
 {
-    if(ui->ChildCheckbox->isChecked()){
-        AddChildToDatabase();
+    try{
+        if(ui->ChildCheckbox->isChecked()){
+            AddChildToDatabase();
+        }
+        else if(ui->ParentCheckbox->isChecked()){
+            AddParentToDatabase();
+        }
+        ChartOfAccountWindow * ChartOfAccountWin= new ChartOfAccountWindow();
+        QSize currentSize = this->size();
+        QPoint currentPosition = this->pos();
+        ChartOfAccountWin->resize(currentSize);
+        ChartOfAccountWin->move(currentPosition);
+        ChartOfAccountWin->show();
+        this->close();
+        delete this;
     }
-    else if(ui->ParentCheckbox->isChecked()){
-        AddParentToDatabase();
+    catch (const std::exception &e) {
+        QMessageBox *msgBox=MainWindow::createStyledMessageBox("Error","An error occurred while saving:",e.what());
+        msgBox->exec();
     }
-    ChartOfAccountWindow * ChartOfAccountWin= new ChartOfAccountWindow();
-    QSize currentSize = this->size();
-    QPoint currentPosition = this->pos();
-    ChartOfAccountWin->resize(currentSize);
-    ChartOfAccountWin->move(currentPosition);
-    ChartOfAccountWin->show();
-    this->close();
-    delete this;
+    catch (...) {
+        QMessageBox* msgBox=MainWindow::createStyledMessageBox("Error","UnknownErrorOccured","");;
+        msgBox->exec();
+    }
+
 }
 
 

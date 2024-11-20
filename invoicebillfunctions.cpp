@@ -122,7 +122,7 @@ void InvoiceBillFunctions::saveAdditionalPaymentsToDatabase(QTableWidget *Table,
 
         // Check if the additional payment is valid
         if (additionalPayment <= 0) {
-            throw std::invalid_argument("Invalid Additional Amount);
+            throw std::invalid_argument("Invalid Additional Amount");
         }
 
         // Bind values to the query passed as a parameter
