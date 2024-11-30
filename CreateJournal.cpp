@@ -202,3 +202,16 @@ void CreateJournal::on_AddRow_clicked()
 
  }
 
+
+void CreateJournal::on_pushButton_3_clicked()
+{
+    MainWindow *MainWin = new MainWindow();
+    QSize currentSize = this->size();
+    QPoint currentPosition = this->pos();
+    MainWin->resize(currentSize);
+    MainWin->move(currentPosition);
+    MainWin->show();
+    this->close();
+    delete this;
+}
+

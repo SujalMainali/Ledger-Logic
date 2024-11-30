@@ -70,7 +70,7 @@ void CreateBill::saveBillTransaction() {
 
     // Execute the query for inserting the bill transaction
     if (!query.exec()) {
-        qDebug() << "Failed to insert bill transaction:" << query.lastError().text();
+        throw std::invalid_argument("Failed to insert Bill transaction: "+query.lastError().text().toStdString());
     } else {
         qDebug() << "Inserted bill transaction for bill number:" << billNumber;
 
@@ -293,5 +293,18 @@ void CreateBill::on_Save_clicked()
         QMessageBox* msgBox=MainWindow::createStyledMessageBox("Error","UnknownErrorOccured","");;
         msgBox->exec();
     }
+}
+
+
+void CreateBill::on_pushButton_2_clicked()
+{
+    MainWindow *MainWin = new MainWindow();
+    QSize currentSize = this->size();
+    QPoint currentPosition = this->pos();
+    MainWin->resize(currentSize);
+    MainWin->move(currentPosition);
+    MainWin->show();
+    this->close();
+    delete this;
 }
 

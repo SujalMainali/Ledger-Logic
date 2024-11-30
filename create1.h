@@ -30,6 +30,8 @@ private slots:
 
     void on_SaveButton_clicked();
 
+    void on_pushButton_clicked();
+
 private:
     Ui::CreateInvoice *ui;
 };

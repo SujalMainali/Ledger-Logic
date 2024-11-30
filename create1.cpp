@@ -303,9 +303,22 @@ void CreateInvoice::on_SaveButton_clicked() {
         msgBox->exec();
     }
     catch (...) {
-        QMessageBox *msgBox=MainWindow::createStyledMessageBox("Error","UnknownErrorOccured","");;
+        QMessageBox *msgBox=MainWindow::createStyledMessageBox("Error","UnknownErrorOccured","");
         msgBox->exec();
     }
 }
 
+
+
+void CreateInvoice::on_pushButton_clicked()
+{
+    MainWindow *MainWin = new MainWindow();
+    QSize currentSize = this->size();
+    QPoint currentPosition = this->pos();
+    MainWin->resize(currentSize);
+    MainWin->move(currentPosition);
+    MainWin->show();
+    this->close();
+    delete this;
+}
 
